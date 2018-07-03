@@ -9,10 +9,12 @@ class Node():
 
 class LinkedList():
 
-    def __init__(self,head=None):
-        self.head = head
+    def __init__(self,lst=[]):
+        self.head = None
         self.size = 0
-    
+        for n in reversed(lst):
+            self.insert(n)
+
     def insert(self,data):
         self.head = Node(data,self.head)
         self.size += 1
@@ -40,6 +42,14 @@ class LinkedList():
         print()
         if not self.head:
             print("The list is empty.")
+
+    def __str__(self):
+        l = []
+        n=self.head
+        while n:
+            l.append(n.data)
+            n = n.next
+        return str(l)
 
     def deleteNode(self, data):
         """ deletes the first occurance of node, containing <data> from <head> list """

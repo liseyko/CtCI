@@ -1,8 +1,8 @@
 from linkedlist import LinkedList
 
 class LL(LinkedList):
-    def __init__(self,head=None):
-        super().__init__(head)
+    def __init__(self):
+        super().__init__()
 
     def undupe(self):
         buffer = set()
