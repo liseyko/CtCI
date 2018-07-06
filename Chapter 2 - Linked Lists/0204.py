@@ -52,5 +52,3 @@ l3 = partitionList2(l1,x)
 print(l3)
 partitionList(l1,x)
 print(l1)
-
-
