@@ -2,9 +2,6 @@
 
 from collections import defaultdict
 
-strings = ["abcd", "cbda","abkd" ,"abdce", "", "a"]
-expected_results = [True,True,False,False,False,False]
-
 def check_permutation0(s1,s2):
     if sorted(s1) == sorted(s2):
         return True
@@ -23,5 +20,3 @@ def check_permutation1(s1,s2):
             return False
     return True
 
-for s in strings:
-    print(check_permutation1(strings[0],s))
