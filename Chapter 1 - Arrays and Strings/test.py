@@ -2,7 +2,7 @@ import unittest
 import importlib
 
 sol = {}
-for i in range(1,4):
+for i in range(1,5):
     sol[100+i] = importlib.import_module('s010'+str(i), package=None)
 
 
@@ -44,18 +44,30 @@ class S0102TestCase(unittest.TestCase):
 
 class S0103TestCase(unittest.TestCase):
     """Tests for: check_permutation0, check_permutation1"""
+    def setUp(self):
+        self.strings_perm = ["abcd", "cbda","dabc"]
+        self.strings_notperm = ["abkd" ,"abdce", "", "a"]
+
     def test_1_perm(self):
-        strings_perm = ["abcd", "cbda","dabc"]
-        for s1 in strings_perm:
-            for s2 in strings_perm:
+        for s1 in self.strings_perm:
+            for s2 in self.strings_perm:
                 self.assertTrue(sol[103].check_permutation1(s1,s2))
     def test_1_notperm(self):
-        strings_notperm = ["abcd","abkd" ,"abdce", "", "a"]
-        for s1 in strings_notperm:
-            for s2 in strings_notperm:
+        for s1 in self.strings_notperm + self.strings_perm:
+            for s2 in self.strings_notperm:
                 if s1 == s2:
                     continue
                 self.assertFalse(sol[103].check_permutation1(s1,s2))
+
+class S0104TestCase(unittest.TestCase):
+    """Tests for: replace"""
+    def test_1_check_converted_strings(self):
+        input_strings=["Mr John Smith"," ","a ","   "]
+        expected_results=["Mr%20John%20Smith","%20","a%20","%20%20%20"]
+        for i in range(len(input_strings)):
+            result = sol[104].replace(input_strings[i])
+            self.assertEqual(result,expected_results[i])
+
 
 
 unittest.main()
