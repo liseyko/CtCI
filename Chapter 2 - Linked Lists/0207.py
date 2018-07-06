@@ -3,19 +3,25 @@
 from linkedlist import LinkedList
 
 def isLLaPalindrome_naive(ll):
+    """reverse and compare 1/2"""
     ll2 = LinkedList()
+    q = 0
     for n in ll:
         ll2.insert(n.data)
+        q += 1
+    q = q // 2
     n1 = ll.head
     n2 = ll2.head
     while n1.data == n2.data:
-        if not n1.next:
+        if not n1.next or q == 1:
             return True
         n1 = n1.next
         n2 = n2.next
+        q -= 1
     return False
 
 def isLLaPalindrome_rec(ll):
+    """ TODO: check only half of the list """
     rw_n = ll.head
     fw_n = rw_n
     l = ll.len
@@ -39,30 +45,32 @@ def isLLaPalindrome_rec(ll):
 
 def isLLaPalindrome(ll):
     stack = LinkedList()
-    rabbit = ll.head
-    if rabbit:
-        turtle = rabbit
-    while rabbit:
-        stack.insert(turtle.data)
-        rabbit = rabbit.next
-        if rabbit:
-            rabbit = rabbit.next
-            turtle = turtle.next
-    #print(ll,stack,turtle.data)
-    n = stack.head
-    while turtle:
-        if turtle.data != n.data:
+    fast = ll.head
+    slow = fast
+
+    while fast and fast.next:
+        stack.insert(slow.data)
+        slow = slow.next
+        fast = fast.next.next
+    
+    if fast is not None: # skip middle element if odd len
+        slow = slow.next
+
+    fast = stack.head
+    while slow:
+        if slow.data != fast.data:
             return False
-        n = n.next
-        turtle = turtle.next
+        slow = slow.next
+        fast = fast.next
     return True
 
 
 test1 = LinkedList([c for c in "never odd or even".replace(" ", "")])
 test2 = LinkedList([c for c in "mr owl ate my metal worm".replace(" ", "")])
 print(isLLaPalindrome_naive(test1))
-isLLaPalindrome_rec(test1)
 print(isLLaPalindrome_naive(test2))
+print("recursive:")
+isLLaPalindrome_rec(test1)
 isLLaPalindrome_rec(test2)
 print("iterative:")
 print(isLLaPalindrome(test1))
