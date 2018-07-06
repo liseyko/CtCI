@@ -2,7 +2,7 @@ import unittest
 import importlib
 
 sol = {}
-for i in range(1,5):
+for i in range(1,6):
     sol[100+i] = importlib.import_module('s010'+str(i), package=None)
 
 
@@ -62,12 +62,22 @@ class S0103TestCase(unittest.TestCase):
 class S0104TestCase(unittest.TestCase):
     """Tests for: replace"""
     def test_1_check_converted_strings(self):
-        input_strings=["Mr John Smith"," ","a ","   "]
-        expected_results=["Mr%20John%20Smith","%20","a%20","%20%20%20"]
+        input_strings=["Mr John Smith"," ","a ","   ","abc"]
+        expected_results=["Mr%20John%20Smith","%20","a%20","%20%20%20","abc"]
         for i in range(len(input_strings)):
             result = sol[104].replace(input_strings[i])
             self.assertEqual(result,expected_results[i])
 
+class S0105TestCase(unittest.TestCase):
+    """Test for: s_compress"""
+    def setUp(self):
+        self.in_strings = ["aabcccccaaa","abbc","abbccc","xxxxxxxXyyyyyYzzzzzzZ","aaaaaaaaffffffffffffffffffdffffffffffffffffffffggggggggggggggggrttttttttttttttttttttttttttttgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssdddddddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"]
+        self.expected_results = ["a2b1c5a3","abbc","abbccc","x7X1y5Y1z6Z1","a8f18d1f20g16r1t28g77s12d7f111d261"]
+
+    def test_1(self):
+        for i in range(len(self.in_strings)):
+            result = sol[105].s_compress(self.in_strings[i])
+            self.assertEqual(result,self.expected_results[i])
 
 
 unittest.main()

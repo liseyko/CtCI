@@ -1,14 +1,6 @@
 # Implement a method to perform basic string compression using counts of repeated characters.
-
-import time
+#import time
 from io import StringIO
-
-in_strings = ["aabcccccaaa","abbc","abbccc","xxxxxxxXyyyyyYzzzzzzZ","aaaaaaaaffffffffffffffffffdffffffffffffffffffffggggggggggggggggrttttttttttttttttttttttttttttgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssdddddddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"]
-for i in range(18):
-    in_strings[0]+=in_strings[0]
-
-
-
 
 def s_compress(s):
     os = ""
@@ -77,6 +69,11 @@ def s_compress_opt2(s):
         i+=1
     return(bs.decode())
 
+"""
+in_strings = ["aabcccccaaa","abbc","abbccc","xxxxxxxXyyyyyYzzzzzzZ","aaaaaaaaffffffffffffffffffdffffffffffffffffffffggggggggggggggggrttttttttttttttttttttttttttttgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssdddddddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"]
+for i in range(18):
+    in_strings[0]+=in_strings[0]
+
 
 start_time = time.time()
 for s in in_strings:
@@ -95,3 +92,4 @@ for s in in_strings:
     #print(s_compress_opt2(s))
     s_compress_opt2(s)
 print("--- %s seconds ---" % (time.time() - start_time))
+"""
