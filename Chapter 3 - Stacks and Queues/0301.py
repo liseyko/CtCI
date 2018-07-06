@@ -3,7 +3,7 @@ LEN_OF_ARRAY = 48
 N_OF_STACKS = 3
 
 class MemAlloc():
-    """memory manager for using just 1 'array' for a few stacks"""
+    """memory manager for using just 1 'array' for 3 stacks"""
     """TODO: deallocation"""
     mem = [0 for i in range(LEN_OF_ARRAY)]
     allocated = []
@@ -55,7 +55,7 @@ class MemAlloc():
         print(sizes,'-',real_size,'=',free_space,'total:',free_space_total)
         print('new free space:',new_free_space,'new locations:', new_loc)
 
-        if free_space[0] > free_space[2]:
+        if n_of_stacks == 3 and free_space[0] > free_space[2]:
             for i in range(1,n_of_stacks):
                 MemAlloc.allocated[i].shift(real_size[i], new_loc[i])
         else:
@@ -98,7 +98,6 @@ class StackInArray():
 
     def push(self,data):
         if self.bottom >= len(self.mem):
-            #print("Error: Out of memory.")
             print("Warning: Out of memory.")
             print(MemAlloc.mem)
             if self.mem.reallocate():
