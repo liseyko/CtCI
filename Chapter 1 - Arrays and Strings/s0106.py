@@ -2,8 +2,7 @@
 
 def init_matrix(m,n):
     if min(m,n)<1:
-        print("incorrect input")
-        exit()
+        return False
     img = []
     for i in range(n):
         img.append([])
@@ -20,6 +19,7 @@ def print_img(img):
     print()
 
 def rotate_naive(img):
+    """returns copy of a matrix"""
     new_img = []
     m = 0
     if img:
@@ -36,7 +36,8 @@ def rotate_naive(img):
     return new_img
 
 
-def rotate1(img): # inplace
+def rotate(img): # inplace
+    """rotates matrix in place"""
     n = len(img)
     m = len(img[0])
 
@@ -50,7 +51,6 @@ def rotate1(img): # inplace
                 img[x+step][y+step-i] = img[x+i][y+step]
                 img[x+i][y+step] = tmp
             x+=1; y+=1
-
 
     rotate_right(min(n,m))
 
@@ -68,14 +68,3 @@ def rotate1(img): # inplace
             del img[m]
 
     return img
-
-
-
-# M x N
-img = init_matrix(5,8)
-
-print_img(img)
-print_img(rotate_naive(img))
-for i in range(1,5):
-    print("r%i: "%i)
-    print_img(rotate1(img))
