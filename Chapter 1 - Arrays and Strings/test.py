@@ -1,9 +1,10 @@
 import unittest
 import importlib
-from random import randint
+import random
+import string
 
 sol = {}
-for i in range(1,7):
+for i in range(1,9):
     sol[100+i] = importlib.import_module('s010'+str(i), package=None)
 
 
@@ -104,9 +105,31 @@ class S0106TestCase(unittest.TestCase):
 
     def test_4_init_random_and_rotate(self):
         for _ in range(100):
-            img = sol[106].init_matrix(randint(2,64),randint(2,64))
+            img = sol[106].init_matrix(random.randint(2,64),random.randint(2,64))
             self.assertEqual(sol[106].rotate_naive(img),sol[106].rotate(img))
             self.assertEqual(sol[106].rotate_naive(img),sol[106].rotate(img))
+
+class S0107TestCase(unittest.TestCase):
+    """Test for: zerofy"""
+    def test_1(self):
+        m1 = sol[107].init_matrix(5,4)
+        m1[0][0]=0
+        m1[3][4]=0
+        self.assertEqual(sol[107].zerofy(m1),[[0, 0, 0, 0, 0], [0, '11', '12', '13', 0], [0, '21', '22', '23', 0], [0, 0, 0, 0, 0]])
+        m1 = sol[107].init_matrix(5,4)
+        m1[2][3]=0
+        self.assertEqual(sol[107].zerofy(m1),[['00', '01', '02', 0, '04'], ['10', '11', '12', 0, '14'], [0, 0, 0, 0, 0], ['30', '31', '32', 0, '34']])
+
+class S0108TestCase(unittest.TestCase):
+    """Test for: isRotation(s1, s2)"""
+    def test_if_str_is_rotation(self):
+        for _ in range(100):
+            k = random.randint(1,32)
+            rndstr = ''.join(random.choice(string.ascii_letters) for _ in range(k))
+            splitpoint = random.randint(0,k)
+            rotation = rndstr[splitpoint:k]+rndstr[0:splitpoint]
+            self.assertTrue(sol[108].isRotation(rndstr, rotation))
+            self.assertFalse(sol[108].isRotation("abc", "cba"))
 
 
 unittest.main()

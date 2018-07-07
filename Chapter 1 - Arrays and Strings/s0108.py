@@ -35,7 +35,7 @@ def isRotation(s1, s2):
     return isSubstring(s1+s1,s2)
 
 
-
+"""
 s1 = "waterbottle" 
 s2 = "erbottlewat"
 tests = [(s1,s2),("hello","llohe"),("hello","lloh"),("hello","ohlle"),("hello","ohell")]
@@ -46,3 +46,4 @@ for s1,s2 in tests:
         print('"{0}" is a rotation of "{1}"'.format(s1,s2))
     else:
         print('"{0}" is NOT a rotation of "{1}"'.format(s1,s2))
+"""
