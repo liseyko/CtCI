@@ -4,7 +4,7 @@ import random
 #import string
 
 sol = {}
-for i in [3]:
+for i in [3,4]:
     sol[300+i] = importlib.import_module('s030'+str(i), package=None)
 
 
@@ -63,6 +63,15 @@ class S0103TestCase(unittest.TestCase):
             ss.popAt(i)
         for i in range(len(ss.stacks)):
             self.assertEqual(str(ss.stacks[5]),"[63, 62, 61, 60, 59, 58]")
+
+class S0304TestCase(unittest.TestCase):
+    "Tests for: hanoi.move "
+    def test_1(self): 
+        ht = sol[304].Hanoi(4)
+        self.assertEqual(str("['[1, 2, 3, 4]', '[]', '[]']"),str(ht))
+        ht.move(0,2)
+        self.assertEqual(str("['[]', '[]', '[1, 2, 3, 4]']"),str(ht))
+
 
 
 unittest.main()
