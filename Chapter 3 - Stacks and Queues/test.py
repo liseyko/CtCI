@@ -65,13 +65,23 @@ class S0103TestCase(unittest.TestCase):
             self.assertEqual(str(ss.stacks[5]),"[63, 62, 61, 60, 59, 58]")
 
 class S0304TestCase(unittest.TestCase):
-    "Tests for: hanoi.move "
-    def test_1(self): 
-        ht = sol[304].Hanoi(4)
-        self.assertEqual(str("['[1, 2, 3, 4]', '[]', '[]']"),str(ht))
-        ht.move(0,2)
-        self.assertEqual(str("['[]', '[]', '[1, 2, 3, 4]']"),str(ht))
+    "Tests for: hanoi.move, hanoi.iterSol"
+    def test_0_init(self):
+        for i in range(1,8):
+            ht = sol[304].Hanoi(i)
+            self.assertEqual("['" + str([j for j in range(1,i+1)]) +"', '[]', '[]']",str(ht))
 
+    def test_1_recursive_solution(self): 
+        for i in range(1,8):
+            ht = sol[304].Hanoi(i)
+            ht.move(0,2)
+            self.assertEqual("['[]', '[]', '" + str([j for j in range(1,i+1)]) + "']",str(ht))
+
+    def test_1_iterative_solution(self): 
+        for i in range(1,8):
+            ht = sol[304].Hanoi(i)
+            ht.iterSol(0,2)
+            self.assertEqual("['[]', '[]', '" + str([j for j in range(1,i+1)]) + "']",str(ht))
 
 
 unittest.main()
