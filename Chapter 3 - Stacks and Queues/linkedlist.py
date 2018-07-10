@@ -76,7 +76,7 @@ class LinkedList():
         while n:
             print(n.data,end=', ')
             n = n.next
-        print()
+        print(n)
         if not self.head:
             print("The list is empty.")
 

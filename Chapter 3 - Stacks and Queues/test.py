@@ -4,7 +4,7 @@ import random
 #import string
 
 sol = {}
-for i in [3,4]:
+for i in [3,4,5]:
     sol[300+i] = importlib.import_module('s030'+str(i), package=None)
 
 
@@ -82,6 +82,19 @@ class S0304TestCase(unittest.TestCase):
             ht = sol[304].Hanoi(i)
             ht.iterSol(0,2)
             self.assertEqual("['[]', '[]', '" + str([j for j in range(1,i+1)]) + "']",str(ht))
+
+class S0305TestCase(unittest.TestCase):
+    """Tests for: push, pop, peek"""
+    def test_all_in_one(self):
+        rq = sol[305].Queue()
+        q = sol[305].MyQueue()
+        
+        for i in range(100):
+            if random.random() < 0.6:
+                rq.enqueue(i)
+                q.enqueue(i)
+            else:
+                self.assertEqual(q.dequeue(),rq.dequeue())
 
 
 unittest.main()
