@@ -1,11 +1,27 @@
 import unittest
 import importlib
 import random
-#import string
+
+from stack import Stack
+from queue import Queue
+
 
 sol = {}
-for i in [3,4,5]:
+for i in [3,4,5,6]:
     sol[300+i] = importlib.import_module('s030'+str(i), package=None)
+
+
+class StackTest(unittest.TestCase):
+    def test_base(self):
+        stack = Stack([1,2])
+        self.assertEqual(len(stack),2)
+        self.assertEqual(str(stack),"[2, 1]")
+        stack.pop(); stack.pop()
+        self.assertIsNone(stack.pop())
+        for i in range(4,7):
+            stack.push(i)
+        self.assertEqual(len(stack),3)
+        self.assertEqual(str(stack),"[6, 5, 4]")
 
 
 class S0103TestCase(unittest.TestCase):
@@ -84,7 +100,7 @@ class S0304TestCase(unittest.TestCase):
             self.assertEqual("['[]', '[]', '" + str([j for j in range(1,i+1)]) + "']",str(ht))
 
 class S0305TestCase(unittest.TestCase):
-    """Tests for: push, pop, peek"""
+    """Tests for: enqueue, dequeue"""
     def test_all_in_one(self):
         rq = sol[305].Queue()
         q = sol[305].MyQueue()
@@ -95,6 +111,28 @@ class S0305TestCase(unittest.TestCase):
                 q.enqueue(i)
             else:
                 self.assertEqual(q.dequeue(),rq.dequeue())
+
+class S0306TestCase(unittest.TestCase):
+    """Tests for: push, pop, isEmpty"""
+    def test_base(self):
+        ss = sol[306].SortedStack()
+        expected_results = [6, 5, 4, 2]
+        ss.push(4)
+        ss.push(6)
+        ss.push(5)
+        ss.push(2)
+        self.assertEqual(str(ss),str(expected_results))
+        for i in range(len(expected_results)):
+            self.assertEqual(ss.pop(),expected_results[i])
+        self.assertIsNone(ss.pop())
+        test_data = [random.randint(0,100) for _ in range(64)]
+        for i in test_data:
+            ss.push(i)
+        test_data.sort(reverse=True)
+        for i in test_data:
+            self.assertEqual(i,ss.pop())
+        self.assertTrue(ss.isEmpty)
+
 
 
 unittest.main()
