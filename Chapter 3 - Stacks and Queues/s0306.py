@@ -7,15 +7,26 @@ class SortedStack():
         self.stack = Stack()
         self.buffer = Stack()
 
+    def loadUnsortedData(self,data):
+        for i in data:
+            self.buffer.push(i)
+
+    def sort(self):
+        while len(self.buffer) > 0:
+            self.push(self.buffer.pop())
+
     def push(self,data):
         if self.isEmpty():
             self.stack.push(data)
         else:
+            i = 0
             while len(self.stack) > 0 and self.peek() > data:
                 self.buffer.push(self.stack.pop())
+                i += 1
             self.stack.push(data)
-            while len(self.buffer) > 0:
+            while len(self.buffer) > 0 and i > 0:
                 self.stack.push(self.buffer.pop())
+                i -= 1
         self.size += 1
 
     def pop(self):

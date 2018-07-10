@@ -133,6 +133,11 @@ class S0306TestCase(unittest.TestCase):
             self.assertEqual(i,ss.pop())
         self.assertTrue(ss.isEmpty)
 
+    def test_LoadAndSort_unsorted_data(self):
+        ss = sol[306].SortedStack()
+        ss.loadUnsortedData([2,5,1,7,3,8,4,9,6,0])
+        ss.sort()
+        self.assertEqual(str(ss),str([i for i in range(9,-1,-1)]))
 
 
 unittest.main()
