@@ -28,6 +28,12 @@ class Queue(LinkedList):
         else:
             return None
 
+    def peek(self):
+        if self.head:
+            return self.head.data
+        else:
+            return None
+
 
 """ Test ""
 q = Queue([1,2])
