@@ -28,24 +28,6 @@ class Tree():
     def __repr__(self):
         return self.root
 
-    def append(self,key,node = None):
-        if not node:
-            if self.root:
-                node = self.root
-            else:
-                self.root = LVMNode(key)
-                return True
-        if key > node.key:
-            if node.r:
-                self.append(key, node.r)
-            else:
-                node.r = LVMNode(key, node)
-        else:
-            if node.l:
-                self.append(key, node.l)
-            else:
-                node.l = LVMNode(key, node)
-
     def insert(self,key):
         p = self.find(key)
         n = LVMNode(key)
@@ -78,12 +60,9 @@ class Tree():
         lh = self.height(m.l)
         rh = self.height(m.r)
         if (lh - rh < 0 and right) or (lh - rh > 0 and not right):
-            print("1st we rotate:", self.key(m))
             self._rotate(m, not right)
-        print("2nd we rotate:", self.key(n),"right=",right)
         self._rotate(n,right)
-        
-        #self.adjustHeight(n)
+
 
     def _rebalanceRight(self, n):
         self._rebalanceLorR(n)
@@ -95,12 +74,9 @@ class Tree():
         p = n.parent
         lh = self.height(n.l)
         rh = self.height(n.r)
-        print("rebalancing",self.key(n),lh,rh)
         if lh - rh > 1:
-            print("right")
             self._rebalanceRight(n)
         elif lh - rh < -1:
-            print("left")
             self._rebalanceLeft(n)
         self.adjustHeight(n)
         if p:
@@ -284,87 +260,32 @@ class Tree():
         return result
 
     def _rotate(self,x,right = True):
-        #print('rotate:',x.key,end=' ')
-        if right:
-            #print("right")
-            return self.rotateRight(x)
-        else:
-            #print("left")
-            return self.rotateLeft(x)
-
-        self.print()
         if right:
             fwd_dir, bwd_dir = "r", "l"
         else:
             fwd_dir, bwd_dir = "l", "r"
+        if not getattr(x,bwd_dir):
+            print(f'no {bwd_dir} rotation possible for {x.key}')
+            return False
         p = x.parent
         y = getattr(x,bwd_dir)
         b = getattr(y,fwd_dir)
-        y.parent = p
-        if p:
-            setattr(p,self.appropriate_child(x),y)
-        else:
-            self.root = y
-            p = y
         x.parent = y
+        y.parent = p
+        setattr(x,bwd_dir,b)
         setattr(y,fwd_dir,x)
         if b:
             b.parent = x
-        x.l = b
-        setattr(x,bwd_dir,b)
-        #self.adjustHeight(p)
-        self.print()
-
+        if p:
+            setattr(p,self.appropriate_child(x,p),y)
+        else:
+            self.root = y
 
     def rotateRight(self,x):
-        self.print()
-        if not x.l:
-            print("no right rotation possible for",x.key,'cause:',x.l)
-            return False
-        print("rotating right:", x.key)
-        #self._rotate(x)
-        p = x.parent
-        y = x.l
-        print("y:", y.key)
-        b = y.r
-        if b:
-            print("b:", b.key)
-        x.parent = y
-        y.parent = p
-        x.l = b
-        y.r = x
-        if b:
-            b.parent = x
-        if p:
-            setattr(p,self.appropriate_child(x,p),y)
-        else:
-            self.root = y
-        self.print()
+        self._rotate(x)
 
     def rotateLeft(self,x):
-        self.print()
-        if not x.r:
-            print("no left rotation possible for",x.key)
-            return False
-        print("rotating left:", x.key)
-        #self._rotate(x, False)
-        p = x.parent
-        y = x.r
-        print("y:", y.key)
-        b = y.l
-        if b:
-            print("b:", b.key)
-        x.parent = y
-        y.parent = p
-        x.r = b
-        y.l = x
-        if b:
-            b.parent = x
-        if p:
-            setattr(p,self.appropriate_child(x,p),y)
-        else:
-            self.root = y
-        self.print()
+        self._rotate(x, False)
 
 
     def key(self,n):
@@ -382,16 +303,16 @@ class Tree():
 if __name__ == '__main__':
     t = Tree()
     for i in [5,3,8,10,7,4,1,8,13,11,12]:
-        n = t.find(i)
-        if n: n = n.key
-        print(f'looking for {i}, found: {n}')
+        #n = t.find(i)
+        #if n: n = n.key
+        #print(f'looking for {i}, found: {n}')
         #t.append(i)
         #t.insert(i)
         t.avlInsert(i)
 
 
     ### t.rotateRight(t.find(5))
-    print("deletung 10")
+    #print("deleting 10")
     t.avlDelete(t.find(10))
 
 
