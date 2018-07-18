@@ -14,9 +14,12 @@ class BTNode():
         self.parent = parent
 
 class BTree():
-    """binary search tree"""
-    def __init__(self):
+    """Binary Search Tree"""
+    def __init__(self,data = []):
         self.root = None
+        if data:
+            for i in data:
+                self.insert(i)
 
     def insert(self,key):
         return self._insert(BTNode(key))
@@ -58,6 +61,7 @@ class BTree():
                 n.l.parent = n.parent
             elif not n.parent:
                 self.root = None
+                return None
             setattr(n.parent,self.appropriate_child(n),n.l)
             return(n.parent)
         else:
@@ -233,19 +237,54 @@ class BTree():
         else:
             return n.key
 
+    def _mergeNodesWithRoot(self,n1,n2,p):
+        """ merge node1 with node2 using p as a root"""
+        if p:
+            if n1:
+                n1.parent = p
+                if n2:
+                    if n1.key > n2.key:
+                        n1, n2 = n2, n1
+            if n2:
+                n2.parent = p
+                if not n2:
+                    n1, n2 = n2, n1
+            p.l = n1
+            p.r = n2
+            return p
+        return None
+
+    def _mergeWithRoot(self,t2,n):
+        """ merge this tree with t2 using node n as a root"""
+        if self.root and n:
+            root = self._mergeNodesWithRoot(self.root,t2.root,n)
+            if root:
+                self.root = root
+
+    def merge(self,t2):
+        """ merge with another tree """
+        if t2 and t2.root and self.root:
+            if self.root.key > t2.root.key:
+                p = self.find(float('inf'))
+                self.delete(p)
+            else:
+                p = t2.find(float('inf'))
+                t2.delete(p)
+            p.parent = None
+            self._mergeWithRoot(t2,p)
 
 
 
 
 
 if __name__ == '__main__':
-    t = BTree()
-    for i in [5,3,8,10,7,4,1,8,13,11,12]:
+    t = BTree([5,3,8,10,7,4,1,8,13,11,12])
+    #for i in :
         #n = t.find(i)
         #if n: n = n.key
         #print(f'looking for {i}, found: {n}')
         #t.append(i)
-        t.insert(i)
+        #t.insert(i)
         #t.avlInsert(i)
 
 
@@ -278,3 +317,8 @@ if __name__ == '__main__':
     print('\nrange:')
     for n in t.range(3,8):
         print(n.key, end = ', ')
+
+    t1 = BTree([i for i in range(1,6,2)])
+    t2 = BTree([i for i in range(8,13,2)])
+    t1.merge(t2)
+    t1.print()

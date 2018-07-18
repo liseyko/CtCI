@@ -1,18 +1,14 @@
-from collections import deque
-
 from btree import BTree, BTNode
 
 class AVLNode(BTNode):
-    """Node for LVM tree"""
     def __init__(self,key):
         super().__init__(key)
         self.height = 1
         self.size = 1
 
 class AVLTree(BTree):
-    """binary search tree"""
-    def __init__(self):
-        super().__init__()
+    def __init__(self,data=[]):
+        super().__init__(data)
 
     def insert(self,key):
         self.rebalance(super()._insert(AVLNode(key)))
@@ -58,6 +54,8 @@ class AVLTree(BTree):
     def appropriate_child(self,c,p = None):
         if not p:
             p = c.parent
+            if not p:
+                return None
         if p.l and p.l == c:
             return "l"
         elif p.r and p.r == c:
@@ -74,6 +72,33 @@ class AVLTree(BTree):
         if not n:
             return 0 
         return n.height
+
+    def _mergeNodesWithRoot(self,n1,n2,p):
+        """ merge node1 with node2 using p as a root"""
+        if p and (n1 or n2):
+            if not n1:
+                n1 = n2
+            p.l = n1
+            n1.parent = p
+            self.adjustHeight(p)
+            return p
+        if n1 and n2 and p and p.key > max(n1.key, n2.key):
+            if n1.key > n2.key: 
+                n1, n2 = n2, n1   # n1 < n2
+            h1, h2 = self.height(n1), self.height(n2)
+            if abs(h1 - h2) <= 1:
+                p = super()._mergeNodesWithRoot(n1,n2,p)
+            elif h1 > h2:
+                n3 = self._mergeNodesWithRoot(n1.r,n2,p)
+                n1.r = n3
+                n3.parent = n1
+            elif h1 < h2:
+                n3 = self._mergeNodesWithRoot(n1,n2.l,p)
+                n2.l = n3
+                n3.parent = n2
+            self.adjustHeight(p)
+            return p
+        return None
 
 
 
@@ -117,3 +142,8 @@ if __name__ == '__main__':
     print('\nrange:')
     for n in t.range(3,8):
         print(n.key, end = ', ')
+
+    t1 = AVLTree([i for i in range(1,6,2)])
+    t2 = AVLTree([i for i in range(8,10,2)])
+    t1.merge(t2)
+    t1.print()
