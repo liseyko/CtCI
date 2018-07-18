@@ -1,5 +1,10 @@
 from collections import deque
 
+class TNode():
+    def __init__(self,key):
+        self.key = key
+        self.children = []
+
 class BTNode():
     """binary tree node"""
     def __init__(self,key, parent = None):
@@ -7,6 +12,13 @@ class BTNode():
         self.l = None
         self.r = None
         self.parent = parent
+
+class LVMNode(BTNode):
+    """Node for LVM tree"""
+    def __init__(self,key):
+        super().__init__(key)
+        self.height = 1
+        self.size = 1
 
 class Tree():
     """binary search tree"""
@@ -21,25 +33,25 @@ class Tree():
             if self.root:
                 node = self.root
             else:
-                self.root = BTNode(key)
+                self.root = LVMNode(key)
                 return True
         if key > node.key:
             if node.r:
                 self.append(key, node.r)
             else:
-                node.r = BTNode(key, node)
+                node.r = LVMNode(key, node)
         else:
             if node.l:
                 self.append(key, node.l)
             else:
-                node.l = BTNode(key, node)
+                node.l = LVMNode(key, node)
 
     def insert(self,key):
         p = self.find(key)
-        n = BTNode(key)
+        n = LVMNode(key)
         if not p:
             self.root = n
-            return True
+            return n
         
         if key > p.key:
             c = 'r'
@@ -51,34 +63,84 @@ class Tree():
             n.l = getattr(p,c)
             n.r = getattr(p,c).r
         setattr(p,c,n)
-        return True
+        return n
+
+    def avlInsert(self,key):
+        self.rebalance(self.insert(key))
+
+    def _rebalanceLorR(self, n, right = True):
+        if right:
+            c = "l"
+        else: 
+            c = "r"
+        m = getattr(n,c)
+        if not m.l:
+            lh = 0
+        else: 
+            lh = m.l.height
+        if not m.r:
+            rh = 0
+        else: 
+            rh = m.r.height
+
+        if (lh - rh < 0 and right) or (lh - rh > 0 and not right):
+            self._rotate(m, not right)
+        self._rotate(n,right)
+        
+        #self.adjustHeight(n)
+
+    def _rebalanceRight(self, n):
+        self._rebalanceLorR(n)
+
+    def _rebalanceLeft(self, n):
+        self._rebalanceLorR(n, False)
+
+    def rebalance(self,n):
+        p = n.parent
+        lh = self.height(n.l)
+        rh = self.height(n.r)
+        print("hhhh",lh,rh)
+        if lh - rh > 1:
+            self._rebalanceRight(n)
+        elif lh - rh < -1:
+            self._rebalanceLeft(n)
+        self.adjustHeight(n)
+        if p:
+            self.rebalance(p)
+
+    def appropriate_child(self,c,p = None):
+        if not p:
+            p = c.parent
+        if p.l and p.l == c:
+            return "l"
+        elif p.r and p.r == c:
+            return "r"
+        else:
+            return None
 
     def delete(self,n):
-
-        def appropriate_child(n):
-            if n.parent.l == n:
-                return "l"
-            else:
-                return "r"
 
         if not n:
             return False
         if not n.r:
-            n.l.parent = n.parent
+            if n.l:
+                n.l.parent = n.parent
             if not n.parent:
-                self.root = n.l.p
-            setattr(n.parent,appropriate_child(n),n.l)
+                self.root = None
+            setattr(n.parent,self.appropriate_child(n),n.l)
         else:
             x = self.next(n)
             while x.l:
                 x = self.next(n)
-            setattr(x.parent,appropriate_child(x),x.r)
-            x.r.parent = x.parent
+            setattr(x.parent,self.appropriate_child(x),x.r)
+            if x.r:
+                x.r.parent = x.parent
             x.l = n.l
             x.r = n.r
             x.parent = n.parent
-            n.r.parent = x
-            setattr(n.parent,appropriate_child(n),x)
+            if n.r:
+                n.r.parent = x
+            setattr(n.parent,self.appropriate_child(n),x)
 
 
     def find(self,key):
@@ -120,15 +182,27 @@ class Tree():
                 n = self.next(n)
         return result
 
+    def adjustHeight(self, n):
+        self.get_height(n)
+        while n.parent is not None:
+            n = n.parent
+            n.height = 1 + max(self.height(n.l),self.height(n.r))
+
+    def height(self,n):
+        if not n:
+            return 0 
+        return n.height
+
     def get_height(self,t = None):
         if t is None:
-            t = self.root
             if not self.root:
                 return 0
+            t = self.root
         h = 1
         for c in (t.l, t.r):
             if c is not None:
                 h = max(h, 1 + self.get_height(c))
+        t.height = h
         return h
 
     def get_size(self, t = None):
@@ -144,6 +218,41 @@ class Tree():
         else:
             return  n.parent.key
 
+    def print(self):
+        n = self.root
+        if not n: return
+        queue = deque([n])
+        i, lvl = 0, 0
+        done = True
+        for j in range(10):
+            print('  ',end = '  ')
+
+        while len(queue) > 0:
+            n = queue.popleft()
+            if n:
+                done = False
+                if n.parent: pk = n.parent.key
+                else: pk = -1
+                print(f'{n.key} (h:{n.height}, p:{pk})', end='  ')
+                for c in n.l, n.r:
+                    queue.append(c)
+            else:
+                print('__', end='  ')
+                for _ in range(2):
+                    queue.append(None)
+            i+=1
+            if i == 2 ** lvl:
+                print("\n")
+                for j in range(10-(2 ** lvl)//2):
+                   print('  ',end = '  ')
+                if done:
+                    break
+                done = True
+                lvl += 1
+                i = 0
+        print()
+
+
     def bfs(self, node = None):
         if not node:
             node = self.root
@@ -153,9 +262,9 @@ class Tree():
             node = queue.popleft()
             #print(node.key)
             result.append(node)
-            for c in node.l, node.r:
-                if c:
-                    queue.append(c)
+            for n in node.l, node.r:
+                if n:
+                    queue.append(n)
         return result
 
     def dfs(self, node = None):
@@ -170,8 +279,100 @@ class Tree():
             result += self.dfs(node.r)
         return result
 
+    def _rotate(self,x,right = True):
+        #print('rotate:',x.key,end=' ')
+        if right:
+            #print("right")
+            return self.rotateLeft(x)
+        else:
+            #print("left")
+            return self.rotateLeft(x)
 
-    #def rotate_right(self.node):
+        self.print()
+        if right:
+            fwd_dir, bwd_dir = "r", "l"
+        else:
+            fwd_dir, bwd_dir = "l", "r"
+        p = x.parent
+        y = getattr(x,bwd_dir)
+        b = getattr(y,fwd_dir)
+        y.parent = p
+        if p:
+            setattr(p,self.appropriate_child(x),y)
+        else:
+            self.root = y
+            p = y
+        x.parent = y
+        setattr(y,fwd_dir,x)
+        if b:
+            b.parent = x
+        x.l = b
+        setattr(x,bwd_dir,b)
+        #self.adjustHeight(p)
+        self.print()
+
+
+    def rotateRight(self,x):
+        self.print()
+        if not x.l:
+            print("no left rotation possible for",x.key)
+            return False
+        print("rotating right:", x.key)
+        #self._rotate(x)
+        p = x.parent
+        y = x.l
+        print("y:", y.key)
+        b = y.r
+        if b:
+            print("b:", b.key)
+        x.parent = y
+        y.parent = p
+        x.l = b
+        y.r = x
+        if b:
+            b.parent = x
+        if p:
+            setattr(p,self.appropriate_child(x,p),y)
+        else:
+            self.root = y
+        self.print()
+
+    def rotateLeft(self,x):
+        self.print()
+        if not x.r:
+            print("no left rotation possible for",x.key)
+            return False
+        print("rotating left:", x.key)
+        #self._rotate(x, False)
+        p = x.parent
+        y = x.r
+        print("y:", y.key)
+        b = y.l
+        if b:
+            print("b:", b.key)
+        x.parent = y
+        y.parent = p
+        x.r = b
+        y.l = x
+        if b:
+            b.parent = x
+        if p:
+            setattr(p,self.appropriate_child(x,p),y)
+        else:
+            self.root = y
+        self.print()
+
+
+    def key(self,n):
+        if not n:
+            return -1
+        else:
+            return n.key
+
+
+
+
+
 
 
 if __name__ == '__main__':
@@ -181,12 +382,22 @@ if __name__ == '__main__':
         if n: n = n.key
         print(f'looking for {i}, found: {n}')
         #t.append(i)
-        t.insert(i)
+        #t.insert(i)
+        t.avlInsert(i)
 
-    t.delete(t.find(10))
+
+    t.rotateRight(t.find(5))
+
+    #t.delete(t.find(10))
+
+
     
     for n in t.bfs():
         print(n.key)
+    print('---')
+
+    t.print()
+
     print('---')
 
     for n in t.dfs():
