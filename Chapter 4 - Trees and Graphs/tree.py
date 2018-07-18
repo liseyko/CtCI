@@ -74,17 +74,13 @@ class Tree():
         else: 
             c = "r"
         m = getattr(n,c)
-        if not m.l:
-            lh = 0
-        else: 
-            lh = m.l.height
-        if not m.r:
-            rh = 0
-        else: 
-            rh = m.r.height
 
+        lh = self.height(m.l)
+        rh = self.height(m.r)
         if (lh - rh < 0 and right) or (lh - rh > 0 and not right):
+            print("1st we rotate:", self.key(m))
             self._rotate(m, not right)
+        print("2nd we rotate:", self.key(n),"right=",right)
         self._rotate(n,right)
         
         #self.adjustHeight(n)
@@ -99,10 +95,12 @@ class Tree():
         p = n.parent
         lh = self.height(n.l)
         rh = self.height(n.r)
-        print("hhhh",lh,rh)
+        print("rebalancing",self.key(n),lh,rh)
         if lh - rh > 1:
+            print("right")
             self._rebalanceRight(n)
         elif lh - rh < -1:
+            print("left")
             self._rebalanceLeft(n)
         self.adjustHeight(n)
         if p:
@@ -118,16 +116,21 @@ class Tree():
         else:
             return None
 
-    def delete(self,n):
+    def avlDelete(self,n):
+        m = self.delete(n)
+        if m:
+            self.rebalance(m)
 
+    def delete(self,n):
         if not n:
             return False
         if not n.r:
             if n.l:
                 n.l.parent = n.parent
-            if not n.parent:
+            elif not n.parent:
                 self.root = None
             setattr(n.parent,self.appropriate_child(n),n.l)
+            return(n.parent)
         else:
             x = self.next(n)
             while x.l:
@@ -141,6 +144,7 @@ class Tree():
             if n.r:
                 n.r.parent = x
             setattr(n.parent,self.appropriate_child(n),x)
+            return(x.parent)
 
 
     def find(self,key):
@@ -183,10 +187,10 @@ class Tree():
         return result
 
     def adjustHeight(self, n):
-        self.get_height(n)
-        while n.parent is not None:
-            n = n.parent
+        #self.get_height(n)
+        while n is not None:
             n.height = 1 + max(self.height(n.l),self.height(n.r))
+            n = n.parent
 
     def height(self,n):
         if not n:
@@ -283,7 +287,7 @@ class Tree():
         #print('rotate:',x.key,end=' ')
         if right:
             #print("right")
-            return self.rotateLeft(x)
+            return self.rotateRight(x)
         else:
             #print("left")
             return self.rotateLeft(x)
@@ -315,7 +319,7 @@ class Tree():
     def rotateRight(self,x):
         self.print()
         if not x.l:
-            print("no left rotation possible for",x.key)
+            print("no right rotation possible for",x.key,'cause:',x.l)
             return False
         print("rotating right:", x.key)
         #self._rotate(x)
@@ -386,9 +390,9 @@ if __name__ == '__main__':
         t.avlInsert(i)
 
 
-    t.rotateRight(t.find(5))
-
-    #t.delete(t.find(10))
+    ### t.rotateRight(t.find(5))
+    print("deletung 10")
+    t.avlDelete(t.find(10))
 
 
     
