@@ -52,7 +52,6 @@ class BTree():
         if getattr(p,c):
             getattr(p,c).parent = n
             n.l = getattr(p,c)
-            n.r = getattr(p,c).r
         setattr(p,c,n)
         return n
 
@@ -135,7 +134,7 @@ class BTree():
         while n.key < r:
             if n.key >= l:
                 result.append(n)
-                n = self.next(n)
+            n = self.next(n)
         return result
 
     def get_height(self,t = None):

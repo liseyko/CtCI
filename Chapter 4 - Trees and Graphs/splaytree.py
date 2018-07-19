@@ -11,20 +11,17 @@ class SplayTree(BTree):
         return n
 
     def insert(self,k):
-        print("inserting:",k)
         n = super().insert(k)
         self.prioritize(n)
         return n
 
 
     def delete(self,n):
-        print('deleting:',n)
         p = super().delete(n)
         if p:
             self.prioritize(p)
 
     def prioritize(self,n):
-        self.print()
         if not n.parent:
             return True
         ps = self.appropriate_child(n)
@@ -32,7 +29,6 @@ class SplayTree(BTree):
             self._zig(n.parent,ps)
             return True
         gps = self.appropriate_child(n.parent)
-        print(f'prioritizing {n.key} (np: {self.key(n.parent)} ps: {ps}, gp: {self.key(n.parent.parent)} gps: {gps})')
         if ps == gps:
             self._zigzig(n,ps)
         else:
@@ -43,25 +39,21 @@ class SplayTree(BTree):
 
     def _zig(self,n,s):
         # rotate n.parent right if n is on a left side of his parent and vice versa
-        print('zig',self.key(n),s)
         self._rotate(n, s == "l")
 
     def _zigzig(self,n,s):
-        print('zigzig')
         self._zig(n.parent.parent, s)
         self._zig(n.parent, s)
 
     def _zigzag(self,n,s1,s2):
-        print('zigzag')
         gp = n.parent.parent
         self._zig(n.parent, s1)
-        self.print()
         self._zig(gp, s2)
 
 
 
 if __name__ == '__main__':
-    t = SplayTree([5,3,8,10,7,4,1, 13,11,12])
+    t = SplayTree([5,3,8,10,7,4,1,8, 13,11,12])
 
 
 
