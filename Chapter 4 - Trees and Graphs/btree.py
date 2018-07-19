@@ -68,15 +68,16 @@ class BTree():
 
     def delete(self,n):
         if not n:
-            return False
+            return None
         if not n.r:
             if n.l:
                 n.l.parent = n.parent
-            elif not n.parent:
-                self.root = None
-                return None
-            setattr(n.parent,self.appropriate_child(n),n.l)
-            return(n.parent)
+            if n.parent:
+                setattr(n.parent,self.appropriate_child(n),n.l)
+                return(n.parent)
+            else:
+                self.root = n.l
+                return self.root
         else:
             x = self.next(n)
             while x.l:
@@ -87,10 +88,16 @@ class BTree():
             x.l = n.l
             x.r = n.r
             x.parent = n.parent
+            if n.l:
+                n.l.parent = x
             if n.r:
                 n.r.parent = x
-            setattr(n.parent,self.appropriate_child(n),x)
+            if n.parent:
+                setattr(n.parent,self.appropriate_child(n),x)
+            else:
+                self.root = x
             return(x.parent)
+
 
     def find(self,key):
         n = self.root
@@ -288,7 +295,6 @@ class BTree():
 
     def _split(self,r,x):
         """splits root node r into two subtrees"""
-        print(f'r,x = {self.key(r)}, {self.key(x)}')
         if not r or not x:
             return None, None
         if x.key < r.key:
@@ -313,7 +319,6 @@ class BTree():
         if sign is not ('<' or '<='):
             r1, r2 = r2, r1
         self.root = r1
-        #print(sys.modules[__name__])
         t2 =  getattr(sys.modules['__main__'], self.__class__.__name__)()
         t2.root = r2
         return t2

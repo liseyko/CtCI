@@ -1,4 +1,3 @@
-import sys
 from btree import BTree, BTNode
 
 class AVLNode(BTNode):
