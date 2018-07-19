@@ -1,3 +1,4 @@
+import sys
 from btree import BTree, BTNode
 
 class AVLNode(BTNode):
@@ -75,13 +76,6 @@ class AVLTree(BTree):
 
     def _mergeNodesWithRoot(self,n1,n2,p):
         """ merge node1 with node2 using p as a root"""
-        if p and (n1 or n2):
-            if not n1:
-                n1 = n2
-            p.l = n1
-            n1.parent = p
-            self.adjustHeight(p)
-            return p
         if n1 and n2 and p and p.key > max(n1.key, n2.key):
             if n1.key > n2.key: 
                 n1, n2 = n2, n1   # n1 < n2
@@ -98,6 +92,11 @@ class AVLTree(BTree):
                 n3.parent = n2
             self.adjustHeight(p)
             return p
+        if p and (not n1 or not n2):
+            if not n1:
+                n1 = n2
+            self.root = n1
+            self.rebalance(super()._insert(p))
         return None
 
 
@@ -142,8 +141,22 @@ if __name__ == '__main__':
     print('\nrange:')
     for n in t.range(3,8):
         print(n.key, end = ', ')
-
+    print('--')
     t1 = AVLTree([i for i in range(1,6,2)])
-    t2 = AVLTree([i for i in range(8,10,2)])
+    t2 = AVLTree([i for i in range(8,13,2)])
+    t1.print()
+    print('--')
+    t2.print()
+    print('--')
+    t1.merge(t2)
+    t1.print()
+
+    print("split/merge:")
+    t1 = AVLTree([i for i in range(1,13,2)])
+    t1.print()
+    t2 = t1.split(t.find(7))
+    t1.print()
+    t2.print()
+    #BTree([i for i in range(8,13,2)])
     t1.merge(t2)
     t1.print()

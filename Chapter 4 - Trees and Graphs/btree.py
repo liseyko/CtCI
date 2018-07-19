@@ -1,4 +1,17 @@
+import sys
 from collections import deque
+"""
+import operator
+
+
+def getTruth(a, op, b):
+    ops = {'>': operator.gt,
+           '<': operator.lt,
+           '>=': operator.ge,
+           '<=': operator.le,
+           '=': operator.eq}
+    return ops[op](a, b)
+"""
 
 class TNode():
     def __init__(self,key):
@@ -273,8 +286,37 @@ class BTree():
             p.parent = None
             self._mergeWithRoot(t2,p)
 
+    def _split(self,r,x):
+        """splits root node r into two subtrees"""
+        print(f'r,x = {self.key(r)}, {self.key(x)}')
+        if not r or not x:
+            return None, None
+        if x.key < r.key:
+            l, m = self._split(r.l,x)
+            m = self._mergeNodesWithRoot(m,r.r,r)
+            return l, m
+        elif x.key > r.key:
+            l, m = self._split(r.r,x)
+            l = self._mergeNodesWithRoot(r.l,l,r)
+            return l, m
+        else:
+            l, m = r.l, r
+            m.l = None
+            return l, m
 
 
+    def split(self,n,sign = '<'):
+        """splits current tree in two. returns new tree"""
+        if not n or not self.root:
+            return None
+        r1, r2 = self._split(self.root,n)
+        if sign is not ('<' or '<='):
+            r1, r2 = r2, r1
+        self.root = r1
+        #print(sys.modules[__name__])
+        t2 =  getattr(sys.modules['__main__'], self.__class__.__name__)()
+        t2.root = r2
+        return t2
 
 
 if __name__ == '__main__':
@@ -317,8 +359,11 @@ if __name__ == '__main__':
     print('\nrange:')
     for n in t.range(3,8):
         print(n.key, end = ', ')
-
-    t1 = BTree([i for i in range(1,6,2)])
-    t2 = BTree([i for i in range(8,13,2)])
+    print('\n---')
+    t1 = BTree([i for i in range(1,13,2)])
+    t1.print()
+    t2 = t1.split(t.find(7))
+    t1.print()
+    t2.print()
     t1.merge(t2)
     t1.print()
