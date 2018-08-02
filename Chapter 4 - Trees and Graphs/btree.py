@@ -359,7 +359,7 @@ if __name__ == '__main__':
         print(n.key,end=', ')
         n = t.next(n)
 
-
+    """
     print('\nrange:')
     for n in t.range(3,8):
         print(n.key, end = ', ')
@@ -371,3 +371,4 @@ if __name__ == '__main__':
     t2.print()
     t1.merge(t2)
     t1.print()
+    """
