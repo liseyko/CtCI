@@ -9,7 +9,7 @@ class BTree():
         self.root = None
 
     def _intArray2BTree(self,intlist,l,r):
-        m = l + (r - l) // 2
+        m = (l + r) // 2
         n = BTNode(intlist[m])
         if l < m:
             n.l = self._intArray2BTree(intlist,l,m-1)
@@ -18,7 +18,8 @@ class BTree():
         return n
         
     def loadFromSortedIntArray(self,intlist):
-        self.root = self._intArray2BTree(intlist,0,len(intlist)-1)
+        if intlist:
+            self.root = self._intArray2BTree(intlist,0,len(intlist)-1)
 
 """
 perfect case:
