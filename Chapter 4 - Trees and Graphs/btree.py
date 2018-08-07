@@ -18,6 +18,7 @@ class TNode():
         self.key = key
         self.children = []
 
+
 class BTNode():
     """binary tree node"""
     def __init__(self,key, parent = None):
@@ -25,6 +26,9 @@ class BTNode():
         self.l = None
         self.r = None
         self.parent = parent
+
+    def __lt__(self, other):
+        return self.key < other.key
 
 class BTree():
     """Binary Search Tree"""
