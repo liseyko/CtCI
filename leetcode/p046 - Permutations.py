@@ -1,3 +1,19 @@
+def heaps_algorithm(a, n = None):
+    if n is None:
+        n = len(a)
+    if n == 1:  # (got a new permutation)
+        print(a)
+        return
+    for i in range(n-1):
+        heaps_algorithm(a, n-1)
+        # always swap the first when odd,
+        # swap the i-th when even
+        if n % 2 == 0: 
+            a[n-1], a[i] = a[i], a[n-1]
+        else:
+            a[n-1], a[0] = a[0], a[n-1]
+    heaps_algorithm(a, n-1);
+
 class Solution:
     def get_perm_idxs(self,idx_set): # 1 2 3
         if len(idx_set) < 2:
@@ -15,5 +31,6 @@ class Solution:
         return self.get_perm_idxs(set(nums))
 
 if __name__ == '__main__':
+    heaps_algorithm([1,2,3],3)
     s = Solution()
     print(s.permute([1,2,3]))
