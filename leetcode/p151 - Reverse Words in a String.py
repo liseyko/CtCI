@@ -34,8 +34,8 @@ class Solution(object):
                     j += 1
         while s[i] == delimeter:
             i -= 1
-        return s[:i+1]
-        #return ''.join(s[:i+1])
+        #return s[:i+1]
+        return ''.join(s[:i+1])
 
 
     def reverseWords(self, s, delimeter = ' '):
