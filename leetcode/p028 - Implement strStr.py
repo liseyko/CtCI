@@ -1,4 +1,4 @@
-class RHash():
+class RHash(): # Rabin-Karp implementation
     def __init__(self,s):
         self.d = 256
         self.q = 101
