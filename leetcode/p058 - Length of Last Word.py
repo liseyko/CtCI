@@ -1,3 +1,9 @@
+from itertools import *
+
+class Solution(object):
+    def lengthOfLastWord(self, s):
+        return sum(1 for _ in takewhile(str.isalpha, dropwhile(str.isspace, imap(str, reversed(s)))))
+
 class Solution:
     def lengthOfLastWord(self, s):
         """
