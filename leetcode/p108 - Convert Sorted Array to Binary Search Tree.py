@@ -20,3 +20,24 @@ class Solution:
         r.right = self.sortedArrayToBST(nums[r_idx+1:])
 
         return r
+
+class Solution: # more efficient
+    def _sortedArrayToBST(self, l, r):
+        if r - l < 0:
+            return None
+        root_idx = (r + l) // 2
+        root = TreeNode(self.nums[root_idx])
+        if r - l > 0:
+            root.left = self._sortedArrayToBST(l, root_idx-1)
+            root.right = self._sortedArrayToBST(root_idx+1, r)
+        return root
+        
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        if len(nums) == 0:
+            return None
+        self.nums = nums
+        return self._sortedArrayToBST(0, len(nums)-1)
