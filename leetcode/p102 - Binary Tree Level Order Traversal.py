@@ -1,0 +1,22 @@
+#from collections import deque
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def levelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+        if not root: return []
+        q = [root]
+        r = []
+        while q:
+            r.append([n.val for n in q])
+            q = [c for n in q for c in (n.left, n.right) if c]
+        return r
