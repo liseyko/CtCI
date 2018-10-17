@@ -13,6 +13,6 @@ class Solution:
                 r.append(c)
         #r = []
         #for c in str:
-        #    r.append(chr(ord(c)|ord(" ")))
+        #    r.append(chr(ord(c)|32))
                
         return ''.join(r)
