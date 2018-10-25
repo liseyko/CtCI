@@ -1,4 +1,7 @@
-# TODO: abs(dividend) is wrong. what if divident == INT_MIN
+# TODO: abs(dividend) is wrong.
+# Integer.MIN_VALUE as dividend is really troublesome. 
+# Solution: turn everything to negative value
+# The only case that will cause overflow is Integer.MIN_VALUE / -1 [edge case]
 class Solution:
     def divide(self, dividend, divisor):
         """
@@ -18,7 +21,7 @@ class Solution:
                     break
             print(r, 1 << i)
             r += 1 << i
-            if r == 2147483648 and not negative: return r - 1            
+            if r == 2147483648 and not negative: return r - 1
             dividend -= divisor << i
             
         if negative:
