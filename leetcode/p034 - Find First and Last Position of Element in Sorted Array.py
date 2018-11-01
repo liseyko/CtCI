@@ -31,3 +31,19 @@ class Solution:
                 j += 1
 
         return [i, j]
+
+    def searchRange(self, nums, target):
+        def bs(l=0, r=len(nums), left=True):
+            while l < r:
+                m = (l + r) // 2
+                if nums[m] > target or (left and target == nums[m]):
+                    r = m
+                else:
+                    l = m + 1
+            return l
+            
+        i = bs()
+        if i == len(nums) or nums[i] != target:
+            return [-1, -1]
+        
+        return [i, bs(i, len(nums), False)-1]
