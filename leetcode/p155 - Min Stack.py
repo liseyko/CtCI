@@ -5,25 +5,22 @@ class MinStack:
         initialize your data structure here.
         """
         self.data = []
-        self.topMin = float('inf')
 
     def push(self, x):
         """
         :type x: int
         :rtype: void
         """
-        self.topMin = min(self.topMin, x)
-        self.data.append((x, self.topMin))
+        topMin = x
+        if self.data:
+            topMin = min(topMin, self.data[-1][1])
+        self.data.append((x, topMin))
 
     def pop(self):
         """
         :rtype: void
         """
         self.data.pop()
-        if self.data:
-            self.topMin = self.data[-1][1]
-        else:
-            self.topMin = float('inf')
 
     def top(self):
         """
