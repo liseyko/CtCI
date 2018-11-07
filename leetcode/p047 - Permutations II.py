@@ -7,7 +7,7 @@ class Solution:
         nums.sort()
         res = []
         
-        def dp(idxs={i for i in range(len(nums))}, r=[]):
+        def bt(idxs={i for i in range(len(nums))}, r=[]):
             if len(r) == len(nums): 
                 res.append(r)
                 return
@@ -16,9 +16,9 @@ class Solution:
             for i in idxs:
                 if nums[i] == p: continue
                 p = nums[i]
-                dp(idxs-{i}, r+[nums[i]])
+                bt(idxs-{i}, r+[nums[i]])
 
-        dp()
+        bt()
         return(res)
         
     def permuteUnique(self, nums):
@@ -31,4 +31,4 @@ class Solution:
                     if i < len(l) and l[i] == n: 
                         break
             ans = new_ans
-        return ans   
+        return ans      
