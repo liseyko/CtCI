@@ -16,7 +16,7 @@ class Solution(object):
         :rtype: int
         
         """
-        ctr = 0
+
         nl = len(nums)
         for i in range(0, nl):
             if nums[i] is not None:
