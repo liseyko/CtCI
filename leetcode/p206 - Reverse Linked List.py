@@ -27,3 +27,14 @@ class Solution:
         head.next.next = head
         head.next = None
         return p
+    
+    def reverseList(self, head):
+        prev, curr = None, head
+    
+        while curr:
+            next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next
+
+        return prev
