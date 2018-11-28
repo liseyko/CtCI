@@ -14,3 +14,8 @@ class Solution:
             else: wc[w] = 1
 
         return sorted(wc.items(), key = lambda x: x[1])[-1][0]
+
+    def mostCommonWord(self, p, banned):
+        banned = set(banned)
+        words = re.findall(r'\w+', p.lower())
+        return collections.Counter(w for w in words if w not in banned).most_common(1)[0][0]
