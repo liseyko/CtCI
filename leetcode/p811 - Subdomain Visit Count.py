@@ -9,7 +9,7 @@ class Solution(object):
             cnt, fqdn = rec.split()
             fqdn = fqdn.split('.')
             for i in range(len(fqdn)):
-                d = '.'.join(fqdn[~i:])
+                d = '.'.join(fqdn[i:])
                 try:
                     res[d] += int(cnt)
                 except:
