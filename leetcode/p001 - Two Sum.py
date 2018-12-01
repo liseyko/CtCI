@@ -5,9 +5,9 @@ class Solution:
         :type target: int
         :rtype: List[int]
         """
-        d = {}
-        for i in range(len(nums)):
-            if nums[i] in d:
-                return [d[nums[i]], i]
-            else:
-                d[target-nums[i]]=i
+        idxs = {}
+        
+        for i, n in enumerate(nums):
+            if tgt - n in idxs:
+                return [idxs[tgt-n], i]
+            idxs[n] = i
