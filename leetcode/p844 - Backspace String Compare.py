@@ -24,3 +24,30 @@ class Solution:
             if S[i] != T[j]:
                 return False
             i, j = i - 1, j - 1
+
+    def backspaceCompare(self, S, T):
+        """
+        :type S: str
+        :type T: str
+        :rtype: bool
+        """
+
+        def next_char_gen(s):
+            bs = 0
+            for c in s[::-1]:
+                if c == '#':
+                    bs += 1
+                elif bs > 0:
+                    bs -= 1
+                else:
+                    yield c
+
+        S_gen = next_char_gen(S)
+        T_gen = next_char_gen(T)
+
+        for a, b in itertools.zip_longest(S_gen, T_gen):
+            if a != b:
+                return False
+
+        return True
+        
