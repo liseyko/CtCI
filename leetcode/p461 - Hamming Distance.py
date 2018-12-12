@@ -13,6 +13,10 @@ class Solution:
             y >>= 1
             
         return r
-
+    
     def hammingDistance(self, x, y):
         return sum(1 for x in (bin(x^y)[2:]) if x == '1')
+
+    def hammingDistance(self, x, y):
+        return bin(x^y)[2:].count('1')
+
