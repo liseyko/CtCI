@@ -14,6 +14,14 @@ class Solution:
             if i == j:
                 row[i] = 1 - row[i]
         return A
-
+    
     def flipAndInvertImage(self, A):
+        halfWidth = (len(A[0]) + 1) // 2
+        for row in A:
+            for i in range(halfWidth):
+                row[i], row[~i] = row[~i] ^ 1, row[i] ^ 1
+        return A      
+    
+    def flipAndInvertImage(self, A):
+
         return [[i ^ 1 for i in row[::-1]] for row in A]
