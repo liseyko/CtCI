@@ -15,3 +15,10 @@ class Solution:
                 j -= 1
 
         return res
+
+    def diStringMatch(self, S):
+        l, r, res = 0, len(S), []
+        for s in S:
+            res.append(l if s == "I" else r)
+            l, r = l + (s == "I"), r - (s == "D")
+        return res + [l]
