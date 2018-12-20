@@ -3,8 +3,9 @@
 # @return an integer
 # def read4(buf):
 
+
 class Solution(object):
-  
+
     def read(self, buf, n):
         """
         :type buf: Destination buffer (List[str])
@@ -14,7 +15,8 @@ class Solution(object):
         i, buf4 = 0, [None] * 4
         while i < n:
             buf4len = min(n - i, read4(buf4))
-            if not buf4len: break
+            if not buf4len:
+                break
             buf[i:] = buf4[:buf4len]
             i += buf4len
 
