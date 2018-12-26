@@ -16,17 +16,14 @@ class Solution:
         return -1
 
     def firstUniqChar(self, s):
-        s = list(s)
-        dupe = set()
-        uniq = {}
+        dupe, uniq = set(), {}
         for i, c in enumerate(s):
-            if c in dupe: continue
-            if c in uniq: 
-                del uniq[c]
-                dupe.add(c)
-            else:
-                uniq[c] = i
+            if c not in dupe:
+                if c in uniq:
+                    del uniq[c]
+                    dupe.add(c)
+                else:
+                    uniq[c] = i
         if uniq:
             return min(uniq.values())
-
         return -1
