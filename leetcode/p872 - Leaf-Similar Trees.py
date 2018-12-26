@@ -6,7 +6,6 @@
 #         self.right = None
 
 
-
 class Solution(object):
     def leafSimilar(self, root1, root2):
         """
@@ -22,7 +21,7 @@ class Solution(object):
                 else:
                     q.extend([c for c in (node.right, node.left) if c])
 
-        for l1, l2 in zip(getleaf([root1]), getleaf([root2])):
+        for l1, l2 in itertools.zip_longest(getleaf([root1]), getleaf([root2])):
             if l1 != l2:
                 return False
         return True
