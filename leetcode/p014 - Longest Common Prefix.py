@@ -12,10 +12,13 @@ class Solution(object):
                 if i == len(s) or c != s[i]:
                     return s[0:i]
 
+    def longestCommonPrefix(self, strs):
+        if not strs:
+            return ""
 
-if __name__ == '__main__':
-    s = Solution()
-    print(s.longestCommonPrefix(['abcd','abce','abec']))
-    print(s.longestCommonPrefix(['abcd','abce','']))
-    print(s.longestCommonPrefix(['abcd','abce','f']))
-    print(s.longestCommonPrefix(['abcde','abcev','fbcde']))
+        for i, c in enumerate(strs[0]):
+            for w in strs[1:]:
+                if i == len(w) or w[i] != c:
+                    return w[:i]
+
+        return strs[0]
