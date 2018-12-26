@@ -1,3 +1,18 @@
+class Solution:
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        stack = []
+        op = set(['(','{','['])
+        for c in s:
+            if c in op:
+                stack.append(c)
+            elif not stack or abs(ord(c) - ord(stack.pop())) > 2:
+                return False
+        return not stack
+
 import argparse
 
 def check_brackets(data):
