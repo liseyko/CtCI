@@ -1,24 +1,13 @@
 class Solution:
     def reverse(self, x):
-        """
-        :type x: int
-        :rtype: int
-        """
-        maxint = 2**31-1
-        #maxint //=10
-        #maxint_remainder = 7 
+        limits = [0, 2**31 - 1, 2**31]
+        sign = -1 if x < 0 else 1
+        limit = divmod(limits[sign], 10)
+        r, x = 0, abs(x)
         r = 0
-        sign = 1
-        if x < 0:
-            sign = -1
-            x *= sign
-            maxint += 1 # or maxint_remainder += 1
-        while x != 0:
-            #we could check for maxint/10+maxint%10 here instead
-            #like: if r > maxint or (r == maxint and x%10 > maxint_remainder):
-            r = r*10 + x%10
-            if r > maxint:
+        while x:
+            x, digit = divmod(x, 10)
+            if r >= limit[0] and (r - limit[0]) * 10 + digit >= limit[1]:
                 return 0
-            x //= 10
-
-        return r*sign
+            r = r * 10 + digit
+        return sign * r
