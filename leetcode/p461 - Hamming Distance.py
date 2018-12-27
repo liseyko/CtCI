@@ -5,17 +5,12 @@ class Solution:
         :type y: int
         :rtype: int
         """
-        r = 0
-        while x or y:
-            if x & 1 != y & 1:
-                r += 1
-            x >>= 1
-            y >>= 1
+        x, y = x ^ y, 0
+        while x:
+            y += x & 1
+            x >>=1
             
-        return r
-    
-    def hammingDistance(self, x, y):
-        return sum(1 for x in (bin(x^y)[2:]) if x == '1')
+        return y
 
     def hammingDistance(self, x, y):
         return bin(x^y)[2:].count('1')
