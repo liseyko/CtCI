@@ -4,17 +4,16 @@ class Solution:
         :type nums: List[int]
         :rtype: int
         """
-        """
-        ms = float('-inf')
-        cs = ms
-        for n in nums:
-            if n > cs + n:
-                cs = n
+        res = s = nums[0]
+        for i in range(1, len(nums)):
+            if nums[i] > s:
+                s = nums[i]
             else:
-                cs +=  n
-            ms = max(ms, cs)
-        return ms
-        """
+                s += nums[i]
+            res = max(s, res)
+        return res
+
+    def maxSubArray(self, nums):
         for i in range(1, len(nums)):
             if nums[i-1] > 0:
                 nums[i] += nums[i-1]
