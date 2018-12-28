@@ -5,39 +5,29 @@
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     def sortedArrayToBST(self, nums):
         """
         :type nums: List[int]
         :rtype: TreeNode
         """
-        if len(nums) == 0:
+        if not nums:
             return None
-
-        r_idx = len(nums) // 2
-        r = TreeNode(nums[r_idx])
-        r.left = self.sortedArrayToBST(nums[:r_idx])
-        r.right = self.sortedArrayToBST(nums[r_idx+1:])
-
-        return r
-
-class Solution: # more efficient
-    def _sortedArrayToBST(self, l, r):
-        if r - l < 0:
-            return None
-        root_idx = (r + l) // 2
-        root = TreeNode(self.nums[root_idx])
-        if r - l > 0:
-            root.left = self._sortedArrayToBST(l, root_idx-1)
-            root.right = self._sortedArrayToBST(root_idx+1, r)
+        ci = len(nums) // 2
+        root = TreeNode(nums[ci])
+        root.left = self.sortedArrayToBST(nums[:ci])
+        root.right = self.sortedArrayToBST(nums[ci+1:])
         return root
-        
+
     def sortedArrayToBST(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: TreeNode
-        """
-        if len(nums) == 0:
-            return None
-        self.nums = nums
-        return self._sortedArrayToBST(0, len(nums)-1)
+        def _sortedArrayToBST(li=0, ri=len(nums)-1):
+            if ri - li < 0:
+                return None
+            ci = li + (ri - li) // 2
+            root = TreeNode(nums[ci])
+            if ri - li > 0:
+                root.left = _sortedArrayToBST(li, ci-1)
+                root.right = _sortedArrayToBST(ci+1, ri)
+            return root
+        return _sortedArrayToBST()
