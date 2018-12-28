@@ -29,3 +29,8 @@ class Solution:
             return False
         return self.isValidBST(root.left, miN, min(maX, root.val)) \
             and self.isValidBST(root.right, max(miN, root.val), maX)
+
+    def isValidBST(self, root, left=float('-inf'), right=float('inf')):
+        return not root or left < root.val < right and \
+                self.isValidBST(root.left, left, root.val) and \
+                self.isValidBST(root.right, root.val, right)
