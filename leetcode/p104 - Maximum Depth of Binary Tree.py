@@ -14,27 +14,11 @@ class Solution:
         """
         if not root:
             return 0
-
         return 1 + max( self.maxDepth(root.left), self.maxDepth(root.right))
 
     def maxDepth(self, root):
-        """ # Iterative """
-        if not root:
-            return 0
-
-        q = deque([root])
-        d = 0  # depth
-        lq = 1 # number of nodes on each level
-        
-        while q:
-            while lq:
-                n = q.popleft()
-                for c in n.left, n.right:
-                    if c:
-                        q.append(c)
-                lq -=1
-
-            lq = len(q)
-            d += 1
-
-        return d
+        lvl, depth = [root], 0
+        while any(lvl):
+            lvl = [c for n in lvl for c in (n.left, n.right) if c]
+            depth += 1
+        return depth
