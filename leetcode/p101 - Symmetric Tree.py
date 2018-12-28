@@ -6,6 +6,7 @@ from collections import deque
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     def isSymmetric(self, root):
         """ [via BFS again]
@@ -16,7 +17,7 @@ class Solution:
             return True
         if root.left and root.right and root.left.val != root.right.val:
             return False
-        
+
         l_queue, r_queue = deque([root.left]), deque([root.right])
 
         while l_queue and r_queue:
@@ -33,3 +34,25 @@ class Solution:
         if l_queue or r_queue:
                 return False
         return True
+
+    def isSymmetric(self, root):
+        level = [root]
+        while any(level):
+            level = [c for n in level if n for c in (n.left, n.right)]
+            for i in range(len(level) // 2):
+                if getattr(level[i], 'val', None) != \
+                   getattr(level[~i], 'val', None):
+                    return False
+        return True
+
+    def isSymmetric(self, root):
+        def isMirror(root1, root2):
+            if not root1 and not root2:
+                return True
+            elif not (root1 and root2):
+                return False
+            return root1.val == root2.val and \
+                isMirror(root1.left, root2.right) and \
+                isMirror(root2.left, root1.right)
+
+        return isMirror(root, root)
