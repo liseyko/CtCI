@@ -5,18 +5,27 @@
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     def __init__(self):
         self.prev = float('-inf')
-        
+
     def isValidBST(self, root):
         """
         :type root: TreeNode
         :rtype: bool
         """
-        if not root: return True
-
+        if not root:
+            return True
         if not self.isValidBST(root.left) or root.val <= self.prev:
             return False
         self.prev = root.val
         return self.isValidBST(root.right)
+
+    def isValidBST(self, root, miN=float('-inf'), maX=float('inf')):
+        if not root:
+            return True
+        if root.val <= miN or root.val >= maX:
+            return False
+        return self.isValidBST(root.left, miN, min(maX, root.val)) \
+            and self.isValidBST(root.right, max(miN, root.val), maX)
