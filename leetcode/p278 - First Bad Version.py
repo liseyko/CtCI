@@ -11,10 +11,10 @@ class Solution:
         :rtype: int
         """
         l, r = 0, n
-        while l <= r:
+        while l < r:
             c = l + (r - l) // 2
             if isBadVersion(c):
-                r = c - 1
+                r = c
             else:
                 l = c + 1
         return l
