@@ -54,5 +54,12 @@ class Solution:
             return root1.val == root2.val and \
                 isMirror(root1.left, root2.right) and \
                 isMirror(root2.left, root1.right)
+        return isMirror(root, root)
 
+    def isSymmetric(self, root):
+        def isMirror(r1, r2):
+            return not r1 and not r2 or \
+                   bool(r1 and r2) and r1.val == r2.val \
+                   and isMirror(r1.left, r2.right) \
+                   and isMirror(r2.left, r1.right)
         return isMirror(root, root)
