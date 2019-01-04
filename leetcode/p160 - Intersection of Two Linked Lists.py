@@ -4,47 +4,39 @@
 #         self.val = x
 #         self.next = None
 
+
 class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        if not (headA and headB):
+            return None
+        pa, pb = headA, headB
+        for _ in range(3):
+            while pa and pb:
+                if pa == pb:
+                    return pa
+                pa, pb = pa.next, pb.next
+            pa = headB if not pa else pa
+            pb = headA if not pb else pb
+
     def getIntersectionNode(self, headA, headB):
         """
         :type head1, head1: ListNode
         :rtype: ListNode
         """
-        slow, fast = headA, headB # blind assumption
-        if not slow or not fast:
-            return None
-        
-        while slow.next and fast.next and slow != fast:
-            slow, fast  = slow.next, fast.next
-
-        if not slow.next: 
-            slow, fast = fast, slow
-            headA, headB = headB, headA
-        diff = 0
-        while slow != fast and slow.next:
-            slow, diff = slow.next, diff + 1
-
-        if slow != fast: 
-            return None
-
-        slow, fast = headA, headB
-        for _ in range(diff):
-            slow = slow.next
-        
-        while slow != fast:
-            slow, fast  = slow.next, fast.next
-
-        return slow
-    
-    def getIntersectionNode(self, headA, headB):
-        a, b = headA, headB        
-        if not a or not b: return None
-        
-        for _ in range(3):
-            while a and b and a != b:
-                a, b  = a.next, b.next 
-            if not a: a = headB
-            if not b: b = headA
-
-        if a != b: return None
-        return a
+        offset = 0
+        for _ in range(2):
+            curA, curB = headA, headB
+            while offset:
+                curA = curA.next
+                offset -= 1
+            while curA and curB:
+                if curA == curB:
+                    return curA
+                curA = curA.next
+                curB = curB.next
+            cur = curA or curB
+            if curB:
+                headA, headB = headB, headA
+            while cur:
+                cur = cur.next
+                offset += 1
