@@ -4,33 +4,30 @@
 #         self.label = x
 #         self.next = None
 #         self.random = None
+
+
 class Solution(object):
     def copyRandomList(self, head):
         """
         :type head: RandomListNode
         :rtype: RandomListNode
         """
-        if not head: return None
-        vis = {head.label: RandomListNode(head.label)}
-        n = head
+        met = {None: None}
 
-        while n:
-            if n.random:
-                if n.random.label not in vis:
-                    vis[n.random.label] = RandomListNode(n.random.label)
-                vis[n.label].random = vis[n.random.label]
-            if n.next:
-                if n.next.label not in vis:
-                    vis[n.next.label] = RandomListNode(n.next.label)
-                vis[n.label].next = vis[n.next.label]
-
-            n = n.next
-            
-        return vis[head.label]
+        def dfs(n):
+            met[n] = RandomListNode(n.label)
+            for c in (n.next, n.random):
+                if c and c not in met:
+                    dfs(c)
+            met[n].next = met[n.next]
+            met[n].random = met[n.random]
+        if head:
+            dfs(head)
+            return met[head]
 
     def copyRandomList(self, head):
         if not head:
-            return 
+            return
         # copy nodes
         cur = head
         while cur:
