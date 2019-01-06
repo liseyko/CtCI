@@ -11,16 +11,16 @@ class Solution:
     # @param root, a tree link node
     # @return nothing
     def connect(self, node):
-        ptr = tmp = TreeLinkNode(0)
+        head = tail = TreeLinkNode(0)
         while node:
             for c in (node.left, node.right):
-                ptr.next = c
+                tail.next = c
                 if c:
-                    ptr = ptr.next
+                    tail = tail.next
             if node.next:
                 node = node.next
             else:
-                node, ptr = tmp.next, tmp
+                node, tail = head.next, head
 
     def connect(self, root):
             while root:
