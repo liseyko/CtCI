@@ -10,23 +10,27 @@
 class Solution:
     # @param root, a tree link node
     # @return nothing
-    def _find_next(self, node):
+    def connect(self, node):
+        ptr = tmp = TreeLinkNode(0)
         while node:
-            for c in [node.left, node.right]:
+            for c in (node.left, node.right):
+                ptr.next = c
                 if c:
-                    yield c
-            node = node.next
-
-    def connect(self, root, parent=None):
-        if root:
-            if parent:
-                ptr = TreeLinkNode(-1)
-                for c in self._find_next(parent):
-                    ptr.next = c
                     ptr = ptr.next
+            if node.next:
+                node = node.next
+            else:
+                node, ptr = tmp.next, tmp
 
-            if root.left or root.right:
-                if not root.left or not root.right:
-                    return self.connect(root.left or root.right, root)
-                self.connect(root.left, root)
-                self.connect(root.right)
+    def connect(self, root):
+            while root:
+                cur = tmp = TreeLinkNode(0)
+                while root:
+                    if root.left:
+                        cur.next = root.left
+                        cur = root.left
+                    if root.right:
+                        cur.next = root.right
+                        cur = root.right
+                    root = root.next
+                root = tmp.next
