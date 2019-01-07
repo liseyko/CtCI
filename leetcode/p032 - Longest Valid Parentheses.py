@@ -1,23 +1,17 @@
 class Solution:
-
     def longestValidParentheses(self, s):
         """
         :type s: str
         :rtype: int
         """
-        
-        maxans = 0
-        stack = [-1]
-
-        for i in range(len(s)):
-
-            if s[i] == '(':
-                stack.append(i)
-            elif s[i] == ')':
-                stack.pop()
-                if not stack:
-                    stack.append(i)
+        res, stk = 0, [-1]
+        for i, c in enumerate(s):
+            if c == '(':
+                stk.append(i)
+            elif c == ')':
+                stk.pop()
+                if stk:
+                    res = max(res, i - stk[-1])
                 else:
-                    maxans = max(maxans, i - stack[-1])
-
-        return maxans
+                    stk.append(i)
+        return res
