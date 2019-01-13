@@ -24,3 +24,16 @@ class Solution:
                 j += 1
             nums[i] = j
             cntr[j] -= 1
+            
+    def sortColors(self, nums):
+        # j <= i <= k
+        i, j, k = 0, 0, len(nums) - 1
+        while i <= k:
+            if nums[i] == 0 and i != j:
+                nums[i], nums[j] = nums[j], nums[i]
+                j += 1
+            elif nums[i] == 2 and i != k:
+                nums[i], nums[k] = nums[k], nums[i]
+                k -= 1
+            else:
+                i += 1
