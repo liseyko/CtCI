@@ -4,19 +4,22 @@
 #         self.label = x
 #         self.neighbors = []
 
+
 class Solution:
+    # TODO: BFS
     # @param node, a undirected graph node
     # @return a undirected graph node
-    def cloneGraph(self, node):
-        vis = {}
+    def cloneGraphDFS(self, node):
+        graphCopy = {}
+        def dfsCopy(node):
+            if not node:
+                return None
+            nodeCopy = UndirectedGraphNode(node.label)
+            graphCopy[node.label] = nodeCopy
+            for neighbor in node.neighbors:
+                if neighbor.label not in graphCopy:
+                    dfsCopy(neighbor)
+                nodeCopy.neighbors.append(graphCopy[neighbor.label])
+            return nodeCopy
 
-        def dfs(x):
-            if not x: return None
-            if x.label not in vis:
-                r = UndirectedGraphNode(x.label)
-                vis[x.label] = r
-                for n in x.neighbors:
-                    r.neighbors.append(dfs(n))
-            return vis[x.label]
-
-        return dfs(node)
+        return dfsCopy(node)
