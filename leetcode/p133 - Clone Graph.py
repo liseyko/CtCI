@@ -6,7 +6,6 @@
 
 
 class Solution:
-    # TODO: BFS
     # @param node, a undirected graph node
     # @return a undirected graph node
     def cloneGraphDFS(self, node):
@@ -23,3 +22,18 @@ class Solution:
             return nodeCopy
 
         return dfsCopy(node)
+
+    def cloneGraph(self, node): # BFS
+        if not node:
+            return None
+        d = {node.label : UndirectedGraphNode(node.label)}
+        q = collections.deque([node])
+        while q:
+            cur = q.popleft()
+            for nxt in cur.neighbors:
+                if nxt.label not in d:
+                    nxtCopy = UndirectedGraphNode(nxt.label)
+                    d[nxt.label] = UndirectedGraphNode(nxt.label)
+                    q.append(nxt)
+                d[cur.label].neighbors.append(d[nxt.label])
+        return d[node.label]
