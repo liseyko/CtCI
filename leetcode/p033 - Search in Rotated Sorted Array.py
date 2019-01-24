@@ -5,9 +5,6 @@ class Solution:
         :type target: int
         :rtype: int
         """
-        if not nums:
-            return -1
-
         low, high = 0, len(nums) - 1
 
         while low <= high:
