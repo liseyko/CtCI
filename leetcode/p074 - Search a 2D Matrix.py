@@ -5,44 +5,17 @@ class Solution:
         :type target: int
         :rtype: bool
         """
-        if not matrix or not matrix[0]:
+        if not matrix:
             return False
-        n, m = len(matrix[0])-1, len(matrix)-1
-        self.t = target
-
-        def bs(l=0, r=m, y=None):
-            if y is None:
-                y = (r - l) // 2 + l
-                if r-l <= 0:
-                    if matrix[y][0] > self.t:
-                        return False
-                    elif matrix[y][0] == self.t:
-                        return True
-                    else:
-                        if self.t > matrix[y][n]:
-                            return False
-                        return bs(0, n,  y)
-                else:
-                    if matrix[y][0] > self.t:
-                        return bs(l, y-1)
-                    elif matrix[y+1][0] > self.t:
-                        if self.t > matrix[y][n]:
-                            return False
-                        return bs(0, n,  y)
-                    else:
-                        return bs(y+1, r)
+        h, w = len(matrix), len(matrix[0])
+        i, j = 0, h*w-1
+        while i <= j:
+            m = i + (j - i) // 2
+            col, row = divmod(m, w)
+            if matrix[col][row] < target:
+                i = m+1
+            elif matrix[col][row] > target:
+                j = m-1
             else:
-                x = (r - l) // 2 + l
-                if r-l <= 0:
-                    if matrix[y][x] == self.t:
-                        return True
-                    else:
-                        return False
-                else:
-                    if matrix[y][x] > self.t:
-                        return bs(l, x-1, y)
-                    elif matrix[y][x] < self.t:
-                        return bs(x+1, r, y)
-                    else:
-                        return True
-        return bs()
+                return True
+        return False
