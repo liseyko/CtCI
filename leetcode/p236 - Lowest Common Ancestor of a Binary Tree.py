@@ -89,3 +89,32 @@ class Solution:
                     stk.pop()
                     if lca == len(stk):
                         lca -= 1
+
+    def lowestCommonAncestor(self, root, n1, n2):
+        # states:
+        # Unprocesed, Left/Right proccesed
+        U, L, R = 2, 1, 0
+        found = False
+        lca_idx = -1
+        stk = [[root, U]]
+        path = []
+        while stk:
+            cn, state = stk[-1]
+            if state == U:
+                if cn == n1 or cn == n2:
+                    if not found:
+                        found = True
+                        lca_idx = len(stk)-1
+                    else:  # found both
+                        return stk[lca_idx][0]
+                stk[-1][1] -= 1
+                if cn.left:
+                    stk.append([cn.left, U])
+            elif state == L:
+                stk[-1][1] -= 1
+                if cn.right:
+                    stk.append([cn.right, U])
+            else:
+                stk.pop()
+                if found and lca_idx == len(stk):
+                    lca_idx -= 1
