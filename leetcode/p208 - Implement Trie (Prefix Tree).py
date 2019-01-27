@@ -19,7 +19,7 @@ class Trie(object):
             else:
                 t[c] = {}
                 t = t[c]
-        t['$'] = True
+        t['\n'] = True
 
     def search(self, word):
         """
@@ -33,7 +33,7 @@ class Trie(object):
                 t = t[c]
             else:
                 return False
-        return '$' in t
+        return '\n' in t
 
     def startsWith(self, prefix):
         """
