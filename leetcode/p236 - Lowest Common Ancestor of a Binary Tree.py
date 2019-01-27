@@ -14,18 +14,18 @@ class Solution:
         :type q: TreeNode
         :rtype: TreeNode
         """
+        self.res = None
+
         def lookup(r=root):
             if self.res or not r:
                 return False
             lr = lookup(r.left)
             rr = lookup(r.right)
-            if r in s and (lr or rr) or (lr and rr):
+            cr = (r == p or r == q)
+            if cr and (lr or rr) or (lr and rr):
                 self.res = r
-            if r in s or lr or rr:
-                return True
+            return cr or lr or rr
 
-        self.res = None
-        s = set([p, q])
         lookup()
         return self.res
 
