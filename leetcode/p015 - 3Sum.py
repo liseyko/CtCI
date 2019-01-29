@@ -4,23 +4,24 @@ class Solution:
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        res = []
         nums.sort()
-        for i in range(len(nums)-2):
-            if i > 0 and nums[i] == nums[i-1]:
+        sol, n = [], len(nums)
+        for i in range(n-2):
+            if i and nums[i] == nums[i-1]:
                 continue
-            l, r = i+1, len(nums)-1
-            while l < r:
-                s = nums[i] + nums[l] + nums[r]
-                if s < 0:
-                    l +=1 
-                elif s > 0:
-                    r -= 1
+            j, k = i+1, n-1
+            while j < k:
+                cv = (nums[i], nums[j], nums[k])
+                cvs = sum(cv)
+                if cvs < 0:
+                    j += 1
+                elif cvs > 0:
+                    k -= 1
                 else:
-                    res.append((nums[i], nums[l], nums[r]))
-                    while l < r and nums[l] == nums[l+1]:
-                        l += 1
-                    while l < r and nums[r] == nums[r-1]:
-                        r -= 1
-                    l += 1; r -= 1
-        return res
+                    sol.append(cv)
+                    while j < k and nums[j] == nums[j+1]:
+                        j += 1
+                    while j < k and nums[k] == nums[k-1]:
+                        k -= 1
+                    j, k = j+1, k-1
+        return sol
