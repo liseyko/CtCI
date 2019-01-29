@@ -4,7 +4,7 @@ class Trie(object):
         """
         Initialize your data structure here.
         """
-        self.trie = {}
+        self.head = {}
 
     def insert(self, word):
         """
@@ -12,14 +12,12 @@ class Trie(object):
         :type word: str
         :rtype: void
         """
-        t = self.trie
+        cur = self.head
         for c in word:
-            if c in t:
-                t = t[c]
-            else:
-                t[c] = {}
-                t = t[c]
-        t['\n'] = True
+            if c not in cur:
+                cur[c] = {}
+            cur = cur[c]
+        cur['\n'] = True
 
     def search(self, word):
         """
@@ -27,13 +25,7 @@ class Trie(object):
         :type word: str
         :rtype: bool
         """
-        t = self.trie
-        for c in word:
-            if c in t:
-                t = t[c]
-            else:
-                return False
-        return '\n' in t
+        return self.startsWith(word) and '\n' in self.cur
 
     def startsWith(self, prefix):
         """
@@ -42,17 +34,38 @@ class Trie(object):
         :type prefix: str
         :rtype: bool
         """
-        t = self.trie
+        self.cur = self.head
         for c in prefix:
-            if c in t:
-                t = t[c]
-            else:
+            self.cur = self.cur.get(c)
+            if not self.cur:
                 return False
         return True
 
 
-# Your Trie object will be instantiated and called as such:
-# obj = Trie()
-# obj.insert(word)
-# param_2 = obj.search(word)
-# param_3 = obj.startsWith(prefix)
+class TrieNode:
+    def __init__(self):
+        self.children = collections.defaultdict(TrieNode)
+        self.end = False
+
+
+class Trie:
+
+    def __init__(self):
+        self.head = TrieNode()
+
+    def insert(self, word):
+        cur = self.head
+        for c in word:
+            cur = cur.children[c]
+        cur.end = True
+
+    def search(self, word):
+        return self.startsWith(word) and self.cur.end
+
+    def startsWith(self, prefix):
+        self.cur = self.head
+        for c in prefix:
+            self.cur = self.cur.children.get(c)
+            if not self.cur:
+                return False
+        return True
