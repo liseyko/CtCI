@@ -40,6 +40,34 @@ class Codec:
         return self._deserialize(map(ord, data))
 
 
-# Your Codec object will be instantiated and called as such:
-# codec = Codec()
-# codec.deserialize(codec.serialize(root))
+class Codec:
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+        :type root: TreeNode
+        :rtype: str
+        """
+        def dfs(n):
+            if n:
+                data.append(unichr(n.val))
+                dfs(n.left)
+                dfs(n.right)
+        data = []
+        dfs(root)
+        return u''.join(data)
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+        :type data: str
+        :rtype: TreeNode
+        """
+        def _deserialize(s, e):
+            root = TreeNode(data[s]) if e-s > 0 else None
+            if e-s > 1:
+                mid = bisect.bisect_left(data, data[s], s+1, e)
+                root.left = _deserialize(s+1, mid)
+                root.right = _deserialize(mid, e)
+            return root
+
+        data = map(ord, data)
+        return _deserialize(0, len(data))
