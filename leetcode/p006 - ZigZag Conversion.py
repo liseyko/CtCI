@@ -5,11 +5,10 @@ class Solution:
         :type numRows: int
         :rtype: str
         """
-        if numRows == 1: return s
-
+        if numRows == 1:
+            return s
         r = [[] for _ in range(numRows)]
         i = 0
-
         while i < len(s):
             zig = 0
             while i < len(s) and zig < numRows:
@@ -25,7 +24,8 @@ class Solution:
 
     # line-by-line approach:
     def convert(self, s, numRows):
-        if numRows == 1: return s
+        if numRows == 1:
+            return s
         res, rowNum = [], 0
         jump1, jump2 = numRows * 2 - 4, 2
         while rowNum < numRows:
@@ -43,4 +43,17 @@ class Solution:
                 i += curJump
                 curJump = jump2 if curJump == jump1 else jump1
             rowNum, jump1, jump2 = rowNum + 1, jump1 - 2, jump2 + 2
+        return ''.join(res)
+
+    def convert(self, s: 'str', numRows: 'int') -> 'str':
+        if numRows < 2:
+            return s
+        res, step = [], numRows*2-2
+        for row_i in range(numRows):
+            for zig in range(row_i, len(s), step):
+                res.append(s[zig])
+                if 0 < row_i < numRows-1:
+                    zag = zig + 2*(numRows-row_i-1)
+                    if zag < len(s):
+                        res.append(s[zag])
         return ''.join(res)
