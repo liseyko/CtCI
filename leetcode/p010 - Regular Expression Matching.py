@@ -40,24 +40,24 @@ class Solution:
         return dp(0, 0)
 
     def isMatch(self, s, p):
-        self.cache = {}
+        cache = {}
         sl, pl = len(s), len(p)
 
         def _isMatch(si=0, pi=0):
             if pi == pl:
                 return si == sl
 
-            if (si, pi) in self.cache:
-                return self.cache[(si, pi)]
+            if (si, pi) in cache:
+                return cache[(si, pi)]
 
             firstMatch = si < sl and (p[pi] == '.' or p[pi] == s[si])
 
             if pl - pi > 1 and p[pi+1] == '*':
-                self.cache[(si, pi)] = _isMatch(si, pi+2) or\
+                cache[(si, pi)] = _isMatch(si, pi+2) or\
                         firstMatch and _isMatch(si+1, pi)
-                return self.cache[(si, pi)]
+                return cache[(si, pi)]
             else:
-                self.cache[(si, pi)] = firstMatch and _isMatch(si+1, pi+1)
-                return self.cache[(si, pi)]
+                cache[(si, pi)] = firstMatch and _isMatch(si+1, pi+1)
+                return cache[(si, pi)]
 
         return _isMatch()
