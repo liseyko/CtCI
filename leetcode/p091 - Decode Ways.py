@@ -10,8 +10,8 @@ class Solution:
                 mem[i] = 0
                 return 0
             res = dfs(i+1)
-            if i < len(s)-1 and (s[i] == '1' or
-               s[i] == '2' and s[i+1] < '7'):
+            if i < len(s)-1 and (s[i] == '1'
+               or s[i] == '2' and s[i+1] < '7'):
                 res += dfs(i+2)
             mem[i] = res
             return res
@@ -23,13 +23,11 @@ class Solution:
         dp = [0]*(len(s))+[1]
 
         for i in range(len(s)-1, -1, -1):
-            if s[i] == '0':
-                dp[i] = 0
-            else:
+            if s[i] != '0':
                 dp[i] = dp[i+1]
-                if i < len(s)-1 and (s[i] == '1' or
-                   s[i] == '2' and s[i+1] < '7'):
-                    dp[i] += dp[i+2]
+            if i < len(s)-1 and (s[i] == '1'
+               or s[i] == '2' and s[i+1] < '7'):
+                dp[i] += dp[i+2]
 
         return dp[0] if s else 0
 
@@ -38,13 +36,11 @@ class Solution:
         dp = [0, 1, 0]
 
         for i in range(len(s)-1, -1, -1):
-            if s[i] == '0':
-                dp[0] = 0
-            else:
+            if s[i] != '0':
                 dp[0] = dp[1]
-                if i < len(s)-1 and (s[i] == '1' or
-                   s[i] == '2' and s[i+1] < '7'):
-                    dp[0] += dp[2]
+            if i < len(s)-1 and (s[i] == '1'
+               or s[i] == '2' and s[i+1] < '7'):
+                dp[0] += dp[2]
             dp[:] = 0, *dp[:2]
 
         return dp[1] if s else 0
