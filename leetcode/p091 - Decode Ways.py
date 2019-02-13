@@ -1,6 +1,6 @@
 class Solution:
     def numDecodings(self, s: 'str') -> 'int':
-        vis = [0]*len(s)
+        # recursive with memorization
         mem = [-1]*(len(s))+[1]
 
         def dfs(i=0):
@@ -17,3 +17,34 @@ class Solution:
             return res
 
         return dfs() if s else 0
+
+    def numDecodings(self, s: 'str') -> 'int':
+        # dp + O(n) space
+        dp = [0]*(len(s))+[1]
+
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == '0':
+                dp[i] = 0
+            else:
+                dp[i] = dp[i+1]
+                if i < len(s)-1 and (s[i] == '1' or
+                   s[i] == '2' and s[i+1] < '7'):
+                    dp[i] += dp[i+2]
+
+        return dp[0] if s else 0
+
+    def numDecodings(self, s: 'str') -> 'int':
+        # dp + O(1) space
+        dp = [0, 1, 0]
+
+        for i in range(len(s)-1, -1, -1):
+            if s[i] == '0':
+                dp[0] = 0
+            else:
+                dp[0] = dp[1]
+                if i < len(s)-1 and (s[i] == '1' or
+                   s[i] == '2' and s[i+1] < '7'):
+                    dp[0] += dp[2]
+            dp[:] = 0, *dp[:2]
+
+        return dp[1] if s else 0
