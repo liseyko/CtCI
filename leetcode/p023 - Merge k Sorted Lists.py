@@ -59,3 +59,60 @@ class Solution(object):
         if not lists:
             return lists
         return lists[0]
+
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        heap = [(l.val, i, l) for (i, l) in enumerate(lists) if l]
+        heapq.heapify(heap)
+
+        res = cur = ListNode(0)
+        while heap:
+            lstId, lst = heapq.heappop(heap)[1:]
+            cur.next = lst
+            cur, lst = cur.next, lst.next
+            if lst:
+                heapq.heappush(heap, (lst.val, lstId, lst))
+
+        return res.next
+
+
+class Result():
+    def __init__(self):
+        self.data = ListNode(None)
+        self.tail = None
+
+    def get(self):
+        return self.data.next
+
+    def append(self, node):
+        if self.tail:
+            self.tail.next = node
+            self.tail = self.tail.next
+        else:
+            self.data.next = self.tail = node
+
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        result = Result()
+        heap = self.putListsIntoHeap(lists)
+        while heap:
+            minValNode = self.getMinValNode(heap)
+            result.append(minValNode)
+        return result.get()
+
+    def putListsIntoHeap(self, lists):
+        heap = []
+        for i, lst in enumerate(lists):
+            if lst:
+                heapq.heappush(heap, (lst.val, i, lst))
+        return heap
+
+    def getMinValNode(self, heap):
+        lstId, lst = heapq.heappop(heap)[1:]
+        minValNode = lst
+        if lst.next:
+            lst = lst.next
+            heapq.heappush(heap, (lst.val, lstId, lst))
+        return minValNode
