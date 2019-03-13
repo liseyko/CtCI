@@ -17,19 +17,16 @@ class Solution:
         return cur
 
     def reverseList(self, head):
-        if not head or not head.next:
-            return head
-        p = self.reverseList(head.next)
-        head.next.next = head
-        head.next = None
-        return p
+        if head and head.next:
+            reversed_body = self.reverseList(head.next)
+            head.next.next, head.next = head, None
+            head = reversed_body
+        return head
 
     def reverseList(self, head):
         prev, curr = None, head
-
         while curr:
             next = curr.next
             curr.next = prev
             prev, curr = curr, next
-
         return prev
