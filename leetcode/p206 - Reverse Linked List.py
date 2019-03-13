@@ -6,18 +6,15 @@
 
 
 class Solution:
-    def reverseList(self, head):
-        if not head or not head.next:
+    def reverseList(self, head: ListNode) -> ListNode:
+        if not head:
             return head
-        prv = head
-        cur = head.next
-        prv.next = None
-        while cur:
-            nxt = cur.next
+        cur, nxt = head, head.next
+        prv = cur.next = None
+        while nxt:
+            prv, cur, nxt = cur, nxt, nxt.next
             cur.next = prv
-            prv = cur
-            cur = nxt
-        return prv
+        return cur
 
     def reverseList(self, head):
         if not head or not head.next:
