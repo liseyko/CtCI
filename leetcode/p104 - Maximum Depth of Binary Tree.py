@@ -6,15 +6,11 @@ from collections import deque
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
-    def maxDepth(self, root):
-        """ # Recursive
-        :type root: TreeNode
-        :rtype: int
-        """
-        if not root:
-            return 0
-        return 1 + max( self.maxDepth(root.left), self.maxDepth(root.right))
+    def maxDepth(self, root: TreeNode) -> int:
+        return 1 + max(self.maxDepth(root.left),
+                       self.maxDepth(root.right)) if root else 0
 
     def maxDepth(self, root):
         lvl, depth = [root], 0
