@@ -11,3 +11,14 @@ class Solution:
     def numTrees(self, n: int) -> int:
         self.res = {0: 1, 1: 1}
         return self._numTrees(n)
+
+
+class Solution:
+    def numTrees(self, n: int) -> int:
+        res = [1, 1]
+        for i in range(2, n+1):
+            res.append(0)
+            for j in range(i):
+                res[-1] += res[j] * res[i-1-j]
+
+        return res[n]
