@@ -24,11 +24,10 @@ class Solution:
     def maxDepth(self, root: TreeNode) -> int:
         """ DFS """
         stack = [(1, root)] if root else None
-        depth = 0
+        result = 0
         while stack:
-            cur_depth, cur_node = stack.pop()
-            depth = max(depth, cur_depth)
-            for chld in cur_node.left, cur_node.right:
-                if chld:
-                    stack.append((cur_depth+1, chld))
-        return depth
+            depth, node = stack.pop()
+            result = max(result, depth)
+            stack += [(depth+1, chld)
+                      for chld in (node.left, node.right) if chld]
+        return result
