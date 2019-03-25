@@ -8,34 +8,7 @@ from collections import deque
 
 
 class Solution:
-    def isSymmetric(self, root):
-        """ [via BFS again]
-        :type root: TreeNode
-        :rtype: bool
-        """
-        if not root:
-            return True
-        if root.left and root.right and root.left.val != root.right.val:
-            return False
-
-        l_queue, r_queue = deque([root.left]), deque([root.right])
-
-        while l_queue and r_queue:
-            ln, rn = l_queue.popleft(), r_queue.popleft()
-            if ln and rn and ln.val == rn.val:
-                l_queue.append(ln.left)
-                r_queue.append(rn.right)
-                l_queue.append(ln.right)
-                r_queue.append(rn.left)
-            elif ln is None and rn is None:
-                pass
-            else:
-                return False
-        if l_queue or r_queue:
-                return False
-        return True
-
-    def isSymmetric(self, root):
+    def isSymmetric(self, root: TreeNode) -> bool:
         level = [root]
         while any(level):
             level = [c for n in level if n for c in (n.left, n.right)]
@@ -45,18 +18,7 @@ class Solution:
                     return False
         return True
 
-    def isSymmetric(self, root):
-        def isMirror(root1, root2):
-            if not root1 and not root2:
-                return True
-            elif not (root1 and root2):
-                return False
-            return root1.val == root2.val and \
-                isMirror(root1.left, root2.right) and \
-                isMirror(root2.left, root1.right)
-        return isMirror(root, root)
-
-    def isSymmetric(self, root):
+    def isSymmetric(self, root: TreeNode) -> bool:
         def isMirror(r1, r2):
             return not r1 and not r2 or \
                    bool(r1 and r2) and r1.val == r2.val \
