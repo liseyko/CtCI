@@ -8,15 +8,14 @@ from collections import deque
 
 
 class Solution:
-    def buildTree(self, preorder, inorder):
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        root = TreeNode(preorder[0]) if preorder else None
         if not preorder:
-            return None
-        root = TreeNode(preorder[0])
-        m = inorder.index(preorder[0])
-        root.left = self.buildTree(preorder[1:len(inorder[:m])+1],
-                                   inorder[:m])
-        root.right = self.buildTree(preorder[1+len(inorder[:m]):],
-                                    inorder[m+1:])
+            return root
+
+        rootIdx = inorder.index(root.val)
+        root.left = self.buildTree(preorder[1:rootIdx+1], inorder[:rootIdx])
+        root.right = self.buildTree(preorder[rootIdx+1:], inorder[rootIdx+1:])
         return root
 
     def buildTree(self, preorder, inorder):
