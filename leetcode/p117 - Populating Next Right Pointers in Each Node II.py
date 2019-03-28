@@ -1,17 +1,18 @@
-# Definition for binary tree with next pointer.
-# class TreeLinkNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-#         self.next = None
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, left, right, next):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
 
 
-class Solution:
-    # @param root, a tree link node
-    # @return nothing
+class Solution(object):
     def connect(self, node):
-        head = tail = TreeLinkNode(0)
+        result = node
+        head = tail = Node(0)
         while node:
             for c in (node.left, node.right):
                 tail.next = c
@@ -21,16 +22,20 @@ class Solution:
                 node = node.next
             else:
                 node, tail = head.next, head
+        return result
 
-    def connect(self, root):
-            while root:
-                cur = tmp = TreeLinkNode(0)
-                while root:
-                    if root.left:
-                        cur.next = root.left
-                        cur = root.left
-                    if root.right:
-                        cur.next = root.right
-                        cur = root.right
-                    root = root.next
-                root = tmp.next
+    def connect(self, root: 'Node') -> 'Node':
+        parent = root
+        head = tail = Node(0, None, None, None)
+
+        while parent:
+            for child in [c for c in (parent.left, parent.right) if c]:
+                tail.next = child
+                tail = tail.next
+
+            parent = parent.next
+            if not parent:
+                tail, parent = head, head.next
+                head.next = None
+
+        return root
