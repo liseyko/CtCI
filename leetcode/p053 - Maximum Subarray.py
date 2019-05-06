@@ -13,8 +13,9 @@ class Solution:
             res = max(s, res)
         return res
 
-    def maxSubArray(self, nums):
-        for i in range(1, len(nums)):
-            if nums[i-1] > 0:
-                nums[i] += nums[i-1]
-        return max(nums)
+    def maxSubArray(self, nums: List[int]) -> int:
+        result = currentSum = nums[0] if nums else None
+        for n in nums[1:]:
+            currentSum = max(currentSum + n, n)
+            result = max(result, currentSum)
+        return result
