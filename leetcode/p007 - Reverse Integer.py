@@ -1,13 +1,14 @@
 class Solution:
-    def reverse(self, x):
-        limits = [0, 2**31 - 1, 2**31]
+    def reverse(self, x: int) -> int:
+        intLimits = {-1: 2**31, 1: 2**31-1}
         sign = -1 if x < 0 else 1
-        limit = divmod(limits[sign], 10)
-        r, x = 0, abs(x)
-        r = 0
+        softLimit, hardLimit = divmod(intLimits[sign], 10)
+        x *= sign
+        rx = 0
         while x:
-            x, digit = divmod(x, 10)
-            if r >= limit[0] and (r - limit[0]) * 10 + digit >= limit[1]:
+            if rx > softLimit or rx == softLimit and x > hardLimit:
                 return 0
-            r = r * 10 + digit
-        return sign * r
+            rx = rx * 10 + x % 10
+            x //= 10
+
+        return sign * rx
