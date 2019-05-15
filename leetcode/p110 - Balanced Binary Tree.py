@@ -32,3 +32,25 @@ class Solution:
         """
         self.getHeight(root)
         return self.balanced
+
+
+class Solution:
+    def __init__(self):
+        self.depths = {}
+    def getDepth(self, root):
+        if root in self.depths:
+            return self.depths[root]
+        if not root:
+            self.depths[root] = 0
+        else:
+            self.depths[root] = 1 + max(self.getDepth(root.left), self.getDepth(root.right))
+        return self.depths[root]
+
+    def isBalanced(self, root: TreeNode) -> bool:
+        if not root:
+            return True
+        if self.isBalanced(root.left) \
+            and self.isBalanced(root.right) \
+            and abs(self.getDepth(root.left) - self.getDepth(root.right)) < 2:
+                return True
+        return False
