@@ -30,3 +30,16 @@ class Solution:
             head = node = head.left
 
         return root
+
+    def connect(self, root: 'Node') -> 'Node':
+        if not root or not root.left:
+            return root
+        curNode, nxtLvl = root, root.left
+        while curNode:
+            curNode.left.next = curNode.right
+            if curNode.next:
+                curNode.right.next = curNode.next.left
+            curNode = curNode.next
+
+        self.connect(nxtLvl)
+        return root
