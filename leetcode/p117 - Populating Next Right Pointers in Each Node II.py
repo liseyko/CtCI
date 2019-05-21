@@ -39,3 +39,19 @@ class Solution(object):
                 head.next = None
 
         return root
+
+    def connect(self, node):
+        result = node
+        nxtLvlHead = curNode = None
+        while node:
+            for child in (n for n in (node.left, node.right) if n):
+                if nxtLvlHead:
+                    curNode.next = child
+                    curNode = curNode.next
+                else:
+                    nxtLvlHead = curNode = child
+            node = node.next
+
+        if nxtLvlHead:
+            self.connect(nxtLvlHead)
+        return result
