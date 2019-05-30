@@ -26,3 +26,18 @@ class Solution(object):
                 r -= 1
             minHeight = min(height[l], height[r])
         return water
+
+    def trap(self, height: List[int]) -> int:
+        result = limL = limR = 0
+        i, j = 0, len(height) - 1
+        while i <= j:
+            if height[i] < height[j]:
+                result += max(0, limL - height[i])
+                limL = max(limL, height[i])
+                i += 1
+            else:
+                result += max(0, limR - height[j])
+                limR = max(limR, height[j])
+                j -= 1
+
+        return result
