@@ -22,11 +22,11 @@ class Solution:
         return ans if n else ['']
 
     def generateParenthesis(self, n):
-        r = set()
+        res = set()
         p = '()'
         if n < 2:
             return [p] if n else ['']
-        for sub_r in self.generateParenthesis(n-1):
-            for i in range(len(sub_r) + 1):
-                r.add(sub_r[:i] + p + sub_r[i:])
-        return list(r)
+        for subres in self.generateParenthesis(n-1):
+            for i in range(len(subres) + 1):
+                res.add(subres[:i] + p + subres[i:])
+        return list(res)
