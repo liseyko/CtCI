@@ -1,17 +1,16 @@
 class Solution(object):
-
-    def trap(self, height):
-        lmax = rmax = res = 0
-        li, ri = 0, len(height)-1
-        while li <= ri:
-            if lmax < rmax:
-                lmax = max(lmax, height[li])
-                res += lmax - height[li]
-                li += 1
+    def trap(self, height: List[int]) -> int:
+        res = lft = rgt = 0
+        i, j = 0, len(height) - 1
+        while i <= j:
+            if lft <= rgt:
+                lft = max(lft, height[i])
+                res += lft - height[i]
+                i += 1
             else:
-                rmax = max(rmax, height[ri])
-                res += rmax - height[ri]
-                ri -= 1
+                rgt = max(rgt, height[j])
+                res  += rgt - height[j]
+                j -= 1
         return res
 
     def trap(self, height):
