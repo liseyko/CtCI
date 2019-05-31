@@ -1,40 +1,32 @@
 class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
 
-    def generateParenthesis(self, N):
-        if N == 0: return ['']
-        ans = []
-        for c in range(N):
-            for left in self.generateParenthesis(c):
-                for right in self.generateParenthesis(N-1-c):
-                    ans.append('({}){}'.format(left, right))
-        return ans    
-
-    def generateParenthesis(self, N):
-        ans = []
-        def backtrack(S = '', left = 0, right = 0):
-            if len(S) == 2 * N:
-                ans.append(S)
+        def bt(s="", lc=0, rc=0):
+            if len(s) == 2*n:
+                res.append(s)
                 return
-            if left < N:
-                backtrack(S+'(', left+1, right)
-            if right < left:
-                backtrack(S+')', left, right+1)
-
-        backtrack()
-        return ans
+            if lc < n:
+                bt(s+"(", lc+1, rc)
+            if rc < lc:
+                bt(s+")", lc, rc+1)
+        bt()
+        return res
 
     def generateParenthesis(self, n):
-        """
-        :type n: int
-        :rtype: List[str]
-        """
-        r = set()      
+        ans = []
+        for c in range(n):
+            for left in self.generateParenthesis(c):
+                for right in self.generateParenthesis(n-1-c):
+                    ans.append('({}){}'.format(left, right))
+        return ans if n else ['']
+
+    def generateParenthesis(self, n):
+        r = set()
         p = '()'
-        if n < 1: return [""]
-        if n == 1:
-            return [p]
+        if n < 2:
+            return [p] if n else ['']
         for sub_r in self.generateParenthesis(n-1):
             for i in range(len(sub_r) + 1):
                 r.add(sub_r[:i] + p + sub_r[i:])
         return list(r)
-
