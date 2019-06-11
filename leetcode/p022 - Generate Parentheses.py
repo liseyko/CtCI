@@ -1,15 +1,15 @@
 class Solution:
-    def generateParenthesis(self, n: int) -> List[str]:
+    def generateParenthesis(self, n):
         res = []
 
-        def bt(s="", lc=0, rc=0):
-            if len(s) == 2*n:
-                res.append(s)
+        def bt(lc=0, rc=0, buf=[]):
+            if lc == rc == n:
+                res.append(''.join(buf))
                 return
             if lc < n:
-                bt(s+"(", lc+1, rc)
+                bt(lc+1, rc, buf+['('])
             if rc < lc:
-                bt(s+")", lc, rc+1)
+                bt(lc, rc+1, buf+[')'])
         bt()
         return res
 
