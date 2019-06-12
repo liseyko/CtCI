@@ -25,3 +25,17 @@ class Solution:
             lvl = nxtLvl
 
         return [lst for lst in res if lst]
+
+
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        res = collections.defaultdict(list)
+        q = collections.deque([(root, 0)]) if root else None
+        while q:
+            node, key = q.popleft()
+            res[key].append(node.val)
+            if node.left:
+                q.append((node.left, key-1))
+            if node.right:
+                q.append((node.right, key+1))
+
+        return [res[i] for i in sorted(res.keys())]
