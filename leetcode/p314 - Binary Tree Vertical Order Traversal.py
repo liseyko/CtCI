@@ -26,7 +26,6 @@ class Solution:
 
         return [lst for lst in res if lst]
 
-
     def verticalOrder(self, root: TreeNode) -> List[List[int]]:
         res = collections.defaultdict(list)
         q = collections.deque([(root, 0)]) if root else None
@@ -39,3 +38,14 @@ class Solution:
                 q.append((node.right, key+1))
 
         return [res[i] for i in sorted(res.keys())]
+
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        res = collections.defaultdict(list)
+        q = collections.deque([(0, root)]) if root else None
+        while q:
+            key, node = q.popleft()
+            res[key].append(node.val)
+            for (k, n) in ((key-1, node.left), (key+1, node.right)):
+                if n:
+                    q.append((k, n))
+        return [res[k] for k in sorted(res.keys())]
