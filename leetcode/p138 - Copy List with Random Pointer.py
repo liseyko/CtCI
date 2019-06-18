@@ -7,6 +7,21 @@
 
 
 class Solution(object):
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        nodes = {None: None}
+        node = head
+        while node:
+            nodes[node.val] = Node(node.val, None, None)
+            node = node.next
+        node = head
+        while node:
+            nextNodeVal = node.next.val if node.next else None
+            randomNodeVal = node.random.val if node.random else None
+            nodes[node.val].next = nodes[nextNodeVal]
+            nodes[node.val].random = nodes[randomNodeVal]
+            node = node.next
+        return nodes[head.val if head else None]
+
     def copyRandomList(self, head):
         """
         :type head: RandomListNode
