@@ -39,28 +39,20 @@ class Solution(object):
             dfs(head)
         return nodes[head]
 
-    def copyRandomList(self, head):
-        if not head:
-            return
-        # copy nodes
+    def copyRandomList(self, head: 'Node') -> 'Node':
         cur = head
         while cur:
             nxt = cur.next
-            cur.next = RandomListNode(cur.label)
-            cur.next.next = nxt
+            cur.next = Node(cur.val, nxt, None)
             cur = nxt
-        # copy random pointers
         cur = head
         while cur:
-            if cur.random:
-                cur.next.random = cur.random.next
+            cur.next.random = cur.random.next if cur.random else None
             cur = cur.next.next
-        # separate two parts
-        second = cur = head.next
-        while cur.next:
-            head.next = cur.next
-            head = head.next
-            cur.next = head.next
-            cur = cur.next
-        head.next = None
-        return second
+        result = head.next if head else None
+        odd, even = head, result
+        while odd:
+            odd.next = odd.next.next
+            even.next = even.next.next if even.next else None
+            odd, even = odd.next, even.next
+        return result
