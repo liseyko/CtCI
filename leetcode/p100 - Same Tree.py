@@ -1,4 +1,3 @@
-from collections import deque
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, x):
@@ -6,15 +5,16 @@ from collections import deque
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
-    def isSameTree(self, p, q): 
+    def isSameTree(self, p, q):
         """ # [ via BFS ] #
         :type p: TreeNode
         :type q: TreeNode
         :rtype: bool
         """
 
-        p_queue, q_queue = deque([p]), deque([q])
+        p_queue, q_queue = collections.deque([p]), deque([q])
 
         while p_queue and q_queue:
             pn, qn = p_queue.popleft(), q_queue.popleft()
@@ -28,5 +28,11 @@ class Solution:
             else:
                 return False
         if p_queue or q_queue:
-                return False
+            return False
         return True
+
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        return p == q or\
+               getattr(p, 'val', None) == getattr(q, 'val', None) and\
+               self.isSameTree(p.left, q.left) and\
+               self.isSameTree(p.right, q.right)
