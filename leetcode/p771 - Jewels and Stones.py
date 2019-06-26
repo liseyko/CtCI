@@ -1,10 +1,4 @@
 class Solution:
-    def numJewelsInStones(self, J, S):
-        """
-        :type J: str
-        :type S: str
-        :rtype: int
-        """
-        J = set(J)
-        #return len([x for x in S if x in J])
-        return sum(x in J for x in S)
+    def numJewelsInStones(self, J: str, S: str) -> int:
+        JS = set(J)
+        return sum(s in JS for s in S)
