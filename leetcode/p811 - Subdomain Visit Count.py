@@ -5,8 +5,8 @@ class Solution:
             cnt, fqdn = record.split()
             cnt = int(cnt)
             dl = fqdn.split('.')
-            for i in range(1, len(dl)+1):
-                d = '.'.join(dl[-i:])
+            for i in range(len(dl)):
+                d = '.'.join(dl[i:])
                 res[d] += cnt
 
         return [str(v)+' '+k for k, v in res.items()]
