@@ -1,18 +1,12 @@
-class Solution(object):
-    def subdomainVisits(self, cpdomains):
-        """
-        :type cpdomains: List[str]
-        :rtype: List[str]
-        """
-        res = {}
-        for rec in cpdomains:
-            cnt, fqdn = rec.split()
-            fqdn = fqdn.split('.')
-            for i in range(len(fqdn)):
-                d = '.'.join(fqdn[i:])
-                try:
-                    res[d] += int(cnt)
-                except:
-                    res[d] = int(cnt)
+class Solution:
+    def subdomainVisits(self, cpdomains: List[str]) -> List[str]:
+        res = collections.defaultdict(int)
+        for record in cpdomains:
+            cnt, fqdn = record.split()
+            cnt = int(cnt)
+            dl = fqdn.split('.')
+            for i in range(1, len(dl)+1):
+                d = '.'.join(dl[-i:])
+                res[d] += cnt
 
-        return [str(v)+" "+k for k, v in res.items()]
+        return [str(v)+' '+k for k, v in res.items()]
