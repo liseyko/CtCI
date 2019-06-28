@@ -1,63 +1,38 @@
 class MinStack:
+
     def __init__(self):
-        self.data = []
-        self.min = float('inf')
+        self.stack = []
+        self.cmin = float('inf')
 
-    def push(self, x):
-        """
-        :type x: int
-        :rtype: void
-        """
-        if x <= self.min:
-            self.data.append(self.min)
-            self.min = x
-        self.data.append(x)
+    def push(self, x: int) -> None:
+        self.cmin = min(self.cmin, x)
+        self.stack.append((x, self.cmin))
 
-    def pop(self):
-        """
-        :rtype: void
-        """
-        if self.min == self.data.pop():
-            self.min = self.data.pop()
+    def pop(self) -> None:
+        self.stack.pop()
+        self.cmin = self.stack[-1][1] if self.stack else float('inf')
 
-    def top(self):
-        """
-        :rtype: int
-        """
-        return self.data[-1]
+    def top(self) -> int:
+        return self.stack[-1][0]
 
-    def getMin(self):
-        """
-        :rtype: int
-        """
-        return self.min
+    def getMin(self) -> int:
+        return self.stack[-1][1]
 
 
 class MinStack:
+
     def __init__(self):
-        self.data = [(None, float('inf'))]
+        self.stack = [(None, float('inf'))]
 
-    def push(self, x):
-        """
-        :type x: int
-        :rtype: void
-        """
-        self.data.append((x, min(self.data[-1][1], x)))
+    def push(self, x: int) -> None:
+        self.stack.append((x, min(x, self.stack[-1][1])))
 
-    def pop(self):
-        """
-        :rtype: void
-        """
-        self.data.pop()
+    def pop(self) -> None:
+        if len(self.stack) > 1:
+            self.stack.pop()
 
-    def top(self):
-        """
-        :rtype: int
-        """
-        return self.data[-1][0]
+    def top(self) -> int:
+        return self.stack[-1][0]
 
-    def getMin(self):
-        """
-        :rtype: int
-        """
-        return self.data[-1][1]
+    def getMin(self) -> int:
+        return self.stack[-1][1]
