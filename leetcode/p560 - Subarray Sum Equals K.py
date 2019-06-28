@@ -1,11 +1,11 @@
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        data = [0]*len(nums)
         res = 0
         for i in range(len(nums)):
+            csum = 0
             for j in range(i, len(nums)):
-                data[i] += nums[j]
-                if data[i] == k:
+                csum += nums[j]
+                if csum == k:
                     res += 1
         return res
 
