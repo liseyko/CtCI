@@ -1,18 +1,12 @@
 class Solution:
-    def findMin(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        i, j = 0, len(nums)-1
-        while i < j and nums[i] >= nums[j]:
-            m = i + (j-i) // 2
-            if nums[m] < nums[i]:
-                j = m
-            elif nums[m] > nums[j]:
-                i = m + 1
+    def findMin(self, nums: List[int]) -> int:
+        low, hgh = 0, len(nums)-1
+        while low < hgh and nums[low] >= nums[hgh]:
+            mid = low + (hgh-low) // 2
+            if nums[mid] < nums[low]:
+                hgh = mid
+            elif nums[mid] > nums[hgh]:
+                low = mid + 1
             else:
-                i, j = i + 1, j - 1
-
-        if nums:
-            return nums[i]
+                low, hgh = low+1, hgh-1
+        return nums[low]
