@@ -1,14 +1,16 @@
 import random
 
-
 class Solution:
-    def findKthLargest(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-        return sorted(nums)[-k]
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        h = nums[:k]
+        heapq.heapify(h)
+        for i in range(k, len(nums)):
+            heapq.heappushpop(h, nums[i])
+
+        return heapq.heappop(h)        
+
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        return heapq.nlargest(k, nums)[-1]
 
     def findKthLargest(self, nums, k):
         random.shuffle(nums)
