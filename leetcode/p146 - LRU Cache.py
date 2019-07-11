@@ -10,6 +10,7 @@ class Node:
             self.next.prev = self.prev
         return self
 
+
 class LRUCache:
     def __init__(self, capacity: int):
         self.cap = capacity
@@ -45,10 +46,12 @@ class LRUCache:
             del self.kv[key]
             del self.kn[key]
 
+
 class Node:
     def __init__(self, val):
         self.next, self.prev = None, None
         self.val = val
+
 
 class LRUCache:
     """ First Attempt """
