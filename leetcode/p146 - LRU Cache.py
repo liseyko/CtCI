@@ -3,12 +3,11 @@ class Node:
         self.prev, self.next = None, None
         self.key, self.val = key, val
 
-    def pop(self):
+    def unlink(self):
         if self.prev:
             self.prev.next = self.next
         if self.next:
             self.next.prev = self.prev
-        return self
 
 
 class LRUCache:
@@ -29,23 +28,24 @@ class LRUCache:
             self.nodes[key].val = value
             self._refresh(key)
         else:
+            self._popWhenFull()
             self.nodes[key] = Node(key, value)
             self._refresh(key, newNode=True)
 
     def _refresh(self, key: int, newNode=False) -> None:
-        if newNode:
-            self._popright()
-        else:
-            self.nodes[key].pop()
+        if not newNode:
+            self.nodes[key].unlink()
         self._appendleft(self.nodes[key])
 
     def _appendleft(self, n: Node) -> None:
         n.next, n.prev = self.head.next, self.head
         self.head.next = n.next.prev = n
 
-    def _popright(self) -> None:
-        if len(self.nodes) > self.cap:
-            del self.nodes[self.tail.prev.pop().key]
+    def _popWhenFull(self) -> None:
+        if len(self.nodes) == self.cap:
+            oldestNode = self.tail.prev
+            del self.nodes[oldestNode.key]
+            oldestNode.unlink()
 
 
 class Node:
