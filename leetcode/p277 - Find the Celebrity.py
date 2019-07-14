@@ -4,32 +4,26 @@
 # @return a boolean, whether a knows b
 # def knows(a, b):
 
-
 class Solution(object):
     def findCelebrity(self, n):
         """
         :type n: int
         :rtype: int
         """
-        self.numOfPeople = n
-        self.knownPeopleOf = [set() for _ in range(n)]
-        self.peopleWhoKnowsPerson = [set() for _ in range(n)]
-        peopleWhoKnowNoOne = set()
-        for pid in range(n):
-            self.findAllKnownPeople(pid)
-            if len(self.knownPeopleOf[pid]) == 0:
-                peopleWhoKnowNoOne.add(pid)
-
-        for pid in peopleWhoKnowNoOne:
-            if len(self.peopleWhoKnowsPerson[pid]) == n-1:
-                return pid
-
+        self.n = n
+        for person in range(n):
+            if self.isPotentialCelebrity(person) and self.doesEverybodyKnow(person):
+                return person
         return -1
 
-    def findAllKnownPeople(self, pid):
-        for anotherPid in range(self.numOfPeople):
-            if anotherPid == pid:
-                continue
-            if knows(pid, anotherPid):
-                self.knownPeopleOf[pid].add(anotherPid)
-                self.peopleWhoKnowsPerson[anotherPid].add(pid)
+    def isPotentialCelebrity(self, person):
+        for anotherPerson in range(self.n):
+            if person != anotherPerson and knows(person, anotherPerson):
+                return False
+        return True
+
+    def doesEverybodyKnow(self, person):
+        for anotherPerson in range(self.n):
+            if not knows(anotherPerson, person):
+                return False
+        return True
