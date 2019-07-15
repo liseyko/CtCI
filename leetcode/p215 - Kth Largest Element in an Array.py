@@ -1,5 +1,3 @@
-import random
-
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         h = nums[:k]
@@ -7,40 +5,27 @@ class Solution:
         for i in range(k, len(nums)):
             heapq.heappushpop(h, nums[i])
 
-        return heapq.heappop(h)        
+        return heapq.heappop(h)
 
     def findKthLargest(self, nums: List[int], k: int) -> int:
         return heapq.nlargest(k, nums)[-1]
 
-    def findKthLargest(self, nums, k):
-        random.shuffle(nums)
-        print(nums, k)
-        return self.quickselect(nums, -k)
-
-    def quickselect(self, l, k, pivot_fn=random.choice):
-        """
-        Select the kth element in l (0 based)
-        :param l: List of numerics
-        :param k: Index
-        :param pivot_fn: Function to choose a pivot, defaults to random.choice
-        :return: The kth element of l
-        """
-        if k < 0:
-            k += len(l)
-
-        if len(l) == 1:
-            assert k == 0
-            return l[0]
-
-        pivot = pivot_fn(l)
-
-        lows = [el for el in l if el < pivot]
-        highs = [el for el in l if el > pivot]
-        pivots = [el for el in l if el == pivot]
-
-        if k < len(lows):
-            return self.quickselect(lows, k, pivot_fn)
-        elif k < len(lows) + len(pivots):
-            return pivots[0]
-        else:
-            return self.quickselect(highs, k-len(lows)-len(pivots), pivot_fn)
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        def partition(l, r):
+            ri = random.randint(l, r)
+            nums[r], nums[ri] = nums[ri], nums[r]
+            for i, v in enumerate(nums[l: r+1], l):
+                if v >= nums[r]:
+                    nums[l], nums[i] = nums[i], nums[l]
+                    l += 1
+            return l - 1
+        
+        l, r, k = 0, len(nums) - 1, k - 1
+        while True:
+            pos = partition(l, r)
+            if pos < k:
+                l = pos + 1
+            elif pos > k:
+                r = pos - 1
+            else:
+                return nums[pos]
