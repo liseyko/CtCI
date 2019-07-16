@@ -11,21 +11,22 @@ class Solution:
         return heapq.nlargest(k, nums)[-1]
 
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        def partition(l, r):
-            ri = random.randint(l, r)
-            nums[r], nums[ri] = nums[ri], nums[r]
-            for i, v in enumerate(nums[l: r+1], l):
-                if v >= nums[r]:
-                    nums[l], nums[i] = nums[i], nums[l]
-                    l += 1
-            return l - 1
-        
-        l, r, k = 0, len(nums) - 1, k - 1
+        def partition(s, e):
+            pi = random.randint(s, e)
+            nums[pi], nums[e] = nums[e], nums[pi]
+            for i in range(s, e):
+                if nums[i] < nums[e]:
+                    nums[s], nums[i] = nums[i], nums[s]
+                    s += 1
+            nums[e], nums[s] = nums[s], nums[e]
+            return s
+
+        s, e, k = 0, len(nums)-1, len(nums)-k
         while True:
-            pos = partition(l, r)
-            if pos < k:
-                l = pos + 1
-            elif pos > k:
-                r = pos - 1
+            pi = partition(s, e)
+            if pi > k:
+                e = pi-1
+            elif pi < k:
+                s = pi+1
             else:
-                return nums[pos]
+                return nums[pi]
