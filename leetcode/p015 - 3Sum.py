@@ -1,27 +1,30 @@
 class Solution:
-    def threeSum(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
-        sol, n = [], len(nums)
-        for i in range(n-2):
-            if i and nums[i] == nums[i-1]:
-                continue
-            j, k = i+1, n-1
-            while j < k:
-                cv = (nums[i], nums[j], nums[k])
-                cvs = sum(cv)
-                if cvs < 0:
-                    j += 1
-                elif cvs > 0:
-                    k -= 1
+        res = []
+
+        def twoSum(n1i):
+            n2i, n3i = n1i+1, len(nums)-1
+            while n2i < n3i:
+                subres = [nums[n1i], nums[n2i], nums[n3i]]
+                subresSum = sum(subres)
+                if subresSum < 0:
+                    n2i += 1
+                elif subresSum > 0:
+                    n3i -= 1
                 else:
-                    sol.append(cv)
-                    while j < k and nums[j] == nums[j+1]:
-                        j += 1
-                    while j < k and nums[k] == nums[k-1]:
-                        k -= 1
-                    j, k = j+1, k-1
-        return sol
+                    res.append(subres)
+                    while n2i < n3i and nums[n2i] == nums[n2i+1]:
+                        n2i += 1
+                    while n2i < n3i and nums[n3i] == nums[n3i-1]:
+                        n3i -= 1
+                    n2i, n3i = n2i + 1, n3i - 1
+
+        for n1i in range(len(nums)-2):
+            if nums[n1i] > 0:
+                break
+            if n1i and nums[n1i-1] == nums[n1i]:
+                continue
+            twoSum(n1i)
+
+        return res
