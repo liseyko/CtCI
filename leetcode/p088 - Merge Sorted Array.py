@@ -28,3 +28,15 @@ class Solution:
                 m -= 1
             else:
                 n -= 1
+
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        n1i, n2i, n1tail = m-1, n-1, m+n-1
+        while n2i > -1:
+            n1 = nums1[n1i] if n1i >= 0 else float('-inf')
+            n2 = nums2[n2i]
+            nums1[n1tail] = max(n1, n2)
+            n1tail -= 1
+            if n1 > n2:
+                n1i -= 1
+            else:
+                n2i -= 1
