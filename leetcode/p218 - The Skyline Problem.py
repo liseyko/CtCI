@@ -8,27 +8,26 @@ Testcases:
 [[2,4,7],[2,4,5],[2,4,6]]
 
 """
-from heapq import heappop, heappush
 
 
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
-        events = [(x0, -y, x1) for x0, x1, y in buildings]
-        events += list({(x1, 0, 0) for _, x1, _ in buildings})
-        events.sort()
+        points = [(x1, -y, x2) for x1, x2, y in buildings]
+        points += list({(x2, 0, 0) for _, x2, _ in buildings})
+        points.sort()
 
-        result = [[0, 0]]
-        active = [(0, float('inf'))]
+        results = [[0, 0]]
+        curHeights = [(0, float('inf'))]  # [negHeight, x]
 
-        for x, negY, x1 in events:
-            while active[0][1] <= x:
-                heappop(active)
+        for x1, negY, x2 in points:
+            while curHeights[0][1] <= x1:
+                heapq.heappop(curHeights)
             if negY:
-                heappush(active, (negY, x1))
-            if result[-1][1] != -active[0][0]:
-                result.append([x, -active[0][0]])
+                heapq.heappush(curHeights, (negY, x2))
+            if curHeights[0][0] != -results[-1][1]:
+                results.append([x1, -curHeights[0][0]])
 
-        return result[1:]
+        return results[1:]
 
 
 class Solution:
