@@ -1,104 +1,46 @@
 class Node:
-    def __init__(self, key, val):
-        self.key, self.val = key, val
+    def __init__(self, key=None, val=None):
         self.next = None
+        self.key, self.val = key, val
 
 
 class MyHashMap:
-
     def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        self.size = 10000
-        self.data = [None] * self.size
+        self.size = 4096
+        self.cache = [None for _ in range(self.size)]
 
-    def hash(self, key):
-        return ((13 * key + 50000) % 99991) % self.size
+    def _getLList(self, key):
+        # idx = key % self.size
+        idx = 0x811c9dc5
+        prime = 0x01000193
+        idx = (idx ^ key * prime) % self.size
+        if not self.cache[idx]:
+            self.cache[idx] = Node()
+        return self.cache[idx]
 
-    def put(self, key, value):
-        """
-        value will always be non-negative.
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        hashkey = self.hash(key)
-        if not self.data[hashkey]:
-            self.data[hashkey] = Node(key, value)
-        else:
-            node = self.data[hashkey]
-            while node:
-                if key == node.key:
-                    node.val = value
-                    return
-                tail, node = node, node.next
-            tail.next = Node(key, value)
-
-    def get(self, key):
-        hashkey = self.hash(key)
-        node = self.data[hashkey]
-        while node:
-            if node.key == key:
-                return node.val
-            node = node.next
-        return -1
-
-    def remove(self, key):
-        hashkey = self.hash(key)
-        node = self.data[hashkey]
-        if node:
-            if node.key == key:
-                self.data[hashkey] = node.next
-            else:
-                prv, cur = node, node.next
-                while cur:
-                    if cur.key == key:
-                        prv.next = cur.next
-                        return
-                    prv, cur = cur, cur.next
-
-
-class MyHashMap:
-
-    def __init__(self):
-        """
-        Initialize your data structure here.
-        """
-        self.k = 101
-        self.buckets = [[] for _ in range(self.k)]
+    def _getParentOfKeyNode(self, key):
+        pn = self._getLList(key)
+        while pn.next:
+            if pn.next.key == key:
+                break
+            pn = pn.next
+        return pn
 
     def put(self, key: int, value: int) -> None:
-        """
-        value will always be non-negative.
-        """
-        b, i = self._getBucketAndIdx(key)
-        if i is not None:
-            b[i][1] = value
+        pn = self._getParentOfKeyNode(key)
+        if pn.next:
+            pn.next.val = value
         else:
-            b.append([key, value])
-
-    def _getBucket(self, key):
-        return self.buckets[key % self.k]
-
-    def _getBucketAndIdx(self, key):
-        b = self._getBucket(key)
-        for i, kv in enumerate(b):
-            if kv[0] == key:
-                return b, i
-        return b, None
+            pn.next = Node(key, value)
 
     def get(self, key: int) -> int:
-        b, i = self._getBucketAndIdx(key)
-        if i is not None:
-            return b[i][1]
-        return -1
+        pn = self._getParentOfKeyNode(key)
+        return pn.next.val if pn.next else -1
 
     def remove(self, key: int) -> None:
-        b, i = self._getBucketAndIdx(key)
-        if i is not None:
-            del b[i]
-
+        pn = self._getParentOfKeyNode(key)
+        if pn.next:
+            pn.next = pn.next.next
 
 # Your MyHashMap object will be instantiated and called as such:
 # obj = MyHashMap()
