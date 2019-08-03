@@ -39,24 +39,24 @@ class Solution:
     def compress(self, chars: List[str]) -> int:
         r = w = 0
 
-        def countDupes():
-            nonlocal r
+        def countDupes(r):
             cnt = 1
             while r < len(chars)-1 and chars[r] == chars[r+1]:
                 r, cnt = r+1, cnt+1
-            return cnt
+            return cnt, r
 
-        def writeCntr(cnt):
-            nonlocal w
-            if cnt == 1:
-                return
-            for c in str(cnt):
-                chars[w] = c
-                w += 1
+        def writeCntr(w, cnt):
+            if cnt != 1:
+                for c in str(cnt):
+                    chars[w] = c
+                    w += 1
+            return w
 
         while r < len(chars):
-            cnt = countDupes()
+            cnt, r = countDupes(r)
             if w != r:
                 chars[w] = chars[r]
             r, w = r+1, w+1
-            writeCntr(cnt)
+            w = writeCntr(w, cnt)
+
+        return w
