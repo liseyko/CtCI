@@ -1,19 +1,3 @@
-class Solution(object):
-    def compress(self, chars):
-        left = i = 0
-        while i < len(chars):
-            char, length = chars[i], 1
-            while (i + 1) < len(chars) and char == chars[i + 1]:
-                length, i = length + 1, i + 1
-            chars[left] = char
-            if length > 1:
-                len_str = str(length)
-                chars[left + 1:left + 1 + len(len_str)] = len_str
-                left += len(len_str)
-            left, i = left + 1, i + 1
-        return left
-
-
 class Solution:
     def compress(self, chars: List[str]) -> int:
         wptr, cnt = 0, 1
@@ -37,3 +21,42 @@ class Solution:
                     chars[wptr] = chars[rptr+1]
 
         return wptr
+
+    def compress(self, chars: List[str]) -> int:
+        r = w = 0
+        while r < len(chars):
+            cnt = 1
+            while r < len(chars)-1 and chars[r] == chars[r+1]:
+                r, cnt = r+1, cnt+1
+            chars[w] = chars[r]
+            r, w = r+1, w+1
+            if cnt > 1:
+                for c in str(cnt):
+                    chars[w] = c
+                    w += 1
+        return w
+
+    def compress(self, chars: List[str]) -> int:
+        r = w = 0
+
+        def countDupes():
+            nonlocal r
+            cnt = 1
+            while r < len(chars)-1 and chars[r] == chars[r+1]:
+                r, cnt = r+1, cnt+1
+            return cnt
+
+        def writeCntr(cnt):
+            nonlocal w
+            if cnt == 1:
+                return
+            for c in str(cnt):
+                chars[w] = c
+                w += 1
+
+        while r < len(chars):
+            cnt = countDupes()
+            if w != r:
+                chars[w] = chars[r]
+            r, w = r+1, w+1
+            writeCntr(cnt)
