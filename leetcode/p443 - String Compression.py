@@ -45,8 +45,9 @@ class Solution:
                 r, cnt = r+1, cnt+1
             return cnt, r
 
-        def writeCntr(w, cnt):
-            if cnt != 1:
+        def compress1char(r, w, cnt):
+            chars[w], w = chars[r], w+1
+            if cnt > 1:
                 for c in str(cnt):
                     chars[w] = c
                     w += 1
@@ -54,9 +55,6 @@ class Solution:
 
         while r < len(chars):
             cnt, r = countDupes(r)
-            if w != r:
-                chars[w] = chars[r]
-            r, w = r+1, w+1
-            w = writeCntr(w, cnt)
-
+            w = compress1char(r, w, cnt)
+            r += 1
         return w
