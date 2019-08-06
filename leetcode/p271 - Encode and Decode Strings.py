@@ -1,29 +1,19 @@
 class Codec:
+
     def encode(self, strs):
-        """Encodes a list of strings to a single string.
-        :type strs: List[str]
-        :rtype: str
-        """
-        buf, res = 0, []
-        for s in strs:
-            for c in s:
-                res.extend([c, c])
-            res.extend([1, 0])
-        return res
+        return ''.join('%d:' % len(s) + s for s in strs)
 
     def decode(self, s):
-        """Decodes a single string to a list of strings.
-        :type s: str
-        :rtype: List[str]
-        """
-        strs, buf, i = [], [], 0
-        while i < len(s)-1:
-            if s[i] == s[i+1]:
-                buf.append(s[i])
-            else:
-                strs.append(''.join(buf))
-                buf = []
-            i += 2
+        strs = []
+        i, slen = 0, 0
+        while i < len(s):
+            if s[i] != ':':
+                slen, i = slen * 10 + int(s[i]), i+1
+                continue
+            strs.append(s[i+1:i+1+slen])
+            i += 1 + slen
+            slen = 0
+
         return strs
 
 
