@@ -39,4 +39,3 @@ class Solution:
             i += 1
         res.extend(buf)
         return ''.join(res)
-
