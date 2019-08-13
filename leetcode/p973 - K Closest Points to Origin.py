@@ -7,3 +7,6 @@ class Solution:
             heapq.heappushpop(h, (-dist, p))
 
         return [p for _, p in h]
+
+    def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
+        return heapq.nsmallest(K, points, key = lambda xy: xy[0]**2 + xy[1]**2)
