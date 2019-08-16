@@ -1,32 +1,19 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        stk, sign, i, op = [], 1, 0, None
-
-        def collectNum(i):
-            n = 0
-            while i < len(s) and s[i].isnumeric():
-                n, i = n * 10 + int(s[i]), i+1
-            stk.append(sign*n)
-            return i
-
-        while i < len(s):
-            c = s[i]
-            if c.isnumeric():
-                i = collectNum(i)
-                if op:
-                    b, a = stk.pop(), stk.pop()
-                    sign = -1 if a < 0 else 1
-                    a = abs(a)
-                    stk.append(sign * getattr(operator, op)(a,b))
-                    op = None
-            else:
-                sign = 1
-                if c == '*':
-                    op = 'mul'
-                elif c == '/':
-                    op = '__ifloordiv__'
-                elif c == '-':
-                    sign = -1
-                i += 1
+        stk, n, op = [], 0, '+'
+        for c in s+'+':
+            if c.isdigit():
+                n = n * 10 + int(c)
+            elif c in {'+', '-', '*', '/'}:
+                if op == '-':
+                    n *= -1
+                if op in '-+':
+                    stk.append(n)
+                elif op == '*':
+                    stk[-1] *= n
+                elif op == '/':
+                    sign = 1 if stk[-1] >= 0 else -1
+                    stk[-1] = abs(stk[-1]) // n * sign
+                op, n = c, 0
 
         return sum(stk)
