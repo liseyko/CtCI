@@ -1,9 +1,8 @@
 class Solution:
     def pourWater(self, heights: List[int], V: int, K: int) -> List[int]:
         heights.append(float('inf'))
-        
-        def flow(step):
-            nonlocal V
+
+        def flowdown(step):
             i = K
             while heights[i+step] <= heights[i]:
                 i += step
@@ -11,13 +10,12 @@ class Solution:
                 i -= step
             if i != K:
                 heights[i] += 1
-                V -= 1
                 return True
             return False
 
-        while V:
-            if not flow(-1) and not flow(1):
+        for _ in range(V):
+            if not flowdown(-1) and not flowdown(1):
                 heights[K] += 1
-                V -= 1
 
-        return heights[:-1]
+        heights.pop()
+        return heights
