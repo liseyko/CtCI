@@ -1,29 +1,23 @@
 class Solution:
     def pourWater(self, heights: List[int], V: int, K: int) -> List[int]:
         heights.append(float('inf'))
+        
+        def flow(step):
+            nonlocal V
+            i = K
+            while heights[i+step] <= heights[i]:
+                i += step
+            while i != K and heights[i] == heights[i-step]:
+                i -= step
+            if i != K:
+                heights[i] += 1
+                V -= 1
+                return True
+            return False
 
-        def findNextLow(k, lr ):
-            print('find', k, lr)
-            if heights[k+lr] <= heights[k]:
-                lower = findNextLow(k+lr, lr)
-                print(heights[k+lr], '<', heights[k], lower)                
-            elif heights[k+lr] < heights[k]:
-                return lower if lower is not None else k+lr
-                
-        def findLow(k):
-            nxtLow = findNextLow(k, -1)
-            if not nxtLow:
-                nxtLow = findNextLow(k, 1)
-            if not nxtLow:
-                nxtLow = k
-            return nxtLow
-            
-        def pour(v, k):
-            while v:
-                lowspot = findLow(k)
-                diff = max(1, min(v, heights[k] - heights[lowspot]))
-                print(lowspot, diff)
-                heights[lowspot] += diff
-                v -= diff
-        pour(V, K)
+        while V:
+            if not flow(-1) and not flow(1):
+                heights[K] += 1
+                V -= 1
+
         return heights[:-1]
