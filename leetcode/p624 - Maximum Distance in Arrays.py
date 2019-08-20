@@ -1,10 +1,10 @@
 class Solution:
-
     def maxDistance(self, arrays: List[List[int]]) -> int:
-        res, curMin, curMax = float('-inf'), float('inf'), float('-inf')
+        cmin = float('inf')
+        cmax = res = float('-inf')
         for a in arrays:
-            res = max(res, max(a[-1]-curMin, curMax-a[0]))
-            curMin, curMax = min(curMin, a[0]), max(curMax, a[-1])
+            res = max(res, max(cmax-a[0], a[-1]-cmin))
+            cmin, cmax = min(cmin, a[0]), max(cmax, a[-1])
         return res
 
     def maxDistance(self, arrays: List[List[int]]) -> int:
