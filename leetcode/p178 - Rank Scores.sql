@@ -1,3 +1,9 @@
+SELECT
+  Score,
+  (SELECT COUNT(DISTINCT Score) FROM Scores WHERE Score >= s.Score) Rank
+FROM Scores s
+ORDER BY Score DESC
+
 SELECT s.Score, r.Rank
 FROM Scores s JOIN (
     SELECT Score, @row_number:=@row_number+1 AS Rank
