@@ -8,7 +8,7 @@
 
 class Solution:
     def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
-        def find(r = root, p = None, v = val):
+        def find(r=root, p=None, v=val):
             if not r:
                 return p
             if v > r.val:
