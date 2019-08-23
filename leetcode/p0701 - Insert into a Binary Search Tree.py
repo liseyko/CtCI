@@ -8,22 +8,16 @@
 
 class Solution:
     def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
-        def find(r=root, p=None, v=val):
-            if not r:
-                return p
-            if v > r.val:
-                return find(r.right, r)
-            elif v < r.val:
-                return find(r.left, r)
+        n = root
+        while n:
+            if val > n.val:
+                p, n, loc = n, n.right, 'right'
+            else:
+                p, n, loc = n, n.left, 'left'
 
-        if not root:
-            return TreeNode(val)
-        n = TreeNode(val)
-        p = find()
-
-        if n.val > p.val:
-            n.right, p.right = p.right, n
+        if root:
+            setattr(p, loc, TreeNode(val))
         else:
-            n.left, p.left = p.left, n
+            root = TreeNode(val)
 
         return root
