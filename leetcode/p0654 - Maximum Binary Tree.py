@@ -5,6 +5,7 @@
 #         self.left = None
 #         self.right = None
 
+
 class Solution:
     def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
         if not nums:
@@ -18,3 +19,17 @@ class Solution:
         root.left = self.constructMaximumBinaryTree(nums[:maxIdx])
         root.right = self.constructMaximumBinaryTree(nums[maxIdx+1:])
         return root
+
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        stk = []
+        for n in nums:
+            last = None
+            while stk and stk[-1].val < n:
+                last = stk.pop()
+            node = TreeNode(n)
+            if stk:
+                stk[-1].right = node
+            if last:
+                node.left = last
+            stk.append(node)
+        return stk[0]
