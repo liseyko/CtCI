@@ -1,7 +1,8 @@
 class Solution:
     def numTilePossibilities(self, tiles: str) -> int:
         res = set()
-        def bt(buf=[], tiles = list(tiles)):
+
+        def bt(buf=[], tiles=list(tiles)):
             if buf:
                 res.add(''.join(buf))
             if not tiles:
@@ -12,17 +13,17 @@ class Solution:
         return len(res)
 
     def numTilePossibilities(self, tiles: str) -> int:
-        t = collections.defaultdict(int)
+        td = collections.defaultdict(int)
         for c in tiles:
-            t[c] += 1
-        res = -1
-        def bt():
-            nonlocal res
-            res += 1
-            for key in t:
-                if t[key]:
-                    t[key] -= 1
-                    bt()
-                    t[key] += 1
-        bt()
-        return res
+            td[c] += 1
+
+        def bt(active_keys=set(td.keys())):
+            n = 0
+            for key in active_keys:
+                n += 1
+                td[key] -= 1
+                n = n+bt(active_keys) if td[key] else n+bt(active_keys-{key})
+                td[key] += 1
+            return n
+
+        return bt()
