@@ -5,4 +5,4 @@ class Solution:
             for i in range(len(res)//2):
                 res[i] = (res[i], res.pop())
 
-        return str(res[0]).replace(' ','')
+        return str(res[0]).replace(' ', '')
