@@ -1,8 +1,10 @@
 class HitCounter:
 
     def __init__(self):
+        """
+        Initialize your data structure here.
+        """
         self.q = collections.deque()
-        self.cntr = 0
 
     def hit(self, timestamp: int) -> None:
         """
@@ -10,7 +12,6 @@ class HitCounter:
         @param timestamp - The current timestamp (in seconds granularity).
         """
         self.q.append(timestamp)
-        self.cntr += 1
 
     def getHits(self, timestamp: int) -> int:
         """
@@ -20,8 +21,8 @@ class HitCounter:
 
         while self.q and self.q[0] <= timestamp - 300:
             self.q.popleft()
-            self.cntr -= 1
-        return self.cntr
+
+        return len(self.q)
 
 
 # Your HitCounter object will be instantiated and called as such:
