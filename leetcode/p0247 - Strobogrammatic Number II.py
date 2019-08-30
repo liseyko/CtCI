@@ -27,3 +27,20 @@ class Solution:
                     res.append(''.join(rec+[sn[c]]+inversion))
 
         return res
+
+
+    def findStrobogrammatic(self, n: int) -> List[str]:
+        sn = [['0', '1', '8'],
+              ['11', '88', '69', '96', '00']]
+        if n == 1:
+            return sn[0]
+        elif n == 2:
+            return sn[1][:-1]
+        else:
+            prev = self.findStrobogrammatic(n-1-(n+1)%2)
+            res = []
+            for ins in sn[(n+1)%2]:
+                for num in prev:
+                    prevMidIdx = (n-1)//2
+                    res.append(''.join(num[:prevMidIdx]+ins+num[prevMidIdx:]))
+            return res
