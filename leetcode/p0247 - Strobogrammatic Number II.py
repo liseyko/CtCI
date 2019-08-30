@@ -19,9 +19,7 @@ class Solution:
                 bt(s+[c])
         bt()
         for i, rec in enumerate(halfres):
-            inversion = []
-            for c in rec[::-1]:
-                inversion.append(sn[c])
+            inversion = [sn[c] for c in rec[::-1]]
             if n % 2 == 0:
                 res.append(''.join(rec+inversion))
             else:
