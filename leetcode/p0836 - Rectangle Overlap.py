@@ -10,3 +10,11 @@ class Solution:
                    rec1[2] <= rec2[0] or
                    rec1[3] <= rec2[1] or
                    rec1[1] >= rec2[3])
+
+    def isRectangleOverlap(self, rec1: List[int], rec2: List[int]) -> bool:
+
+        def intersect(pl, pr, ql, qr):
+            return min(pr, qr) > max(pl, ql)
+
+        return intersect(*rec1[0::2], *rec2[0::2]) and\
+            intersect(*rec1[1::2], *rec2[1::2])
