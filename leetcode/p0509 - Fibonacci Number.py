@@ -1,5 +1,12 @@
 class Solution:
     def fib(self, N: int) -> int:
+        data = [0, 1]
+        for _ in range(2, N+1):
+            data.append(sum(data[-2:]))
+        return data[N]
+
+class Solution:
+    def fib(self, N: int) -> int:
         nums = collections.deque([0, 1]) if N else [0]
         for _ in range(2, N+1):
             nums.append(nums.popleft() + nums[-1])
