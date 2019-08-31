@@ -1,4 +1,16 @@
 class Solution:
+    """ Serialize PreorderTraversal2Str then substr search """
+    def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
+
+        def convert(p):
+            return "^" + str(p.val) + "#" +\
+             convert(p.left) +\
+             convert(p.right) if p else "$"
+
+        return convert(t) in convert(s)
+
+
+class Solution:
     """ second: tree2list, then find sublist by bruteforce anyway"""
     def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
         ss, ts = [], []
@@ -17,6 +29,7 @@ class Solution:
             if ts == ss[i:i+len(ts)]:
                 return True
         return False
+
 
 class Solution:
     """ first bruteforce solution """
