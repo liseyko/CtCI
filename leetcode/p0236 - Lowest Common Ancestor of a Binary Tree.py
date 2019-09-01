@@ -1,53 +1,4 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
-
 class Solution:
-    def lowestCommonAncestor(self, root, p, q):
-        """
-        :type root: TreeNode
-        :type p: TreeNode
-        :type q: TreeNode
-        :rtype: TreeNode
-        """
-        self.res = None
-
-        def lookup(r=root):
-            if self.res or not r:
-                return False
-            lr = lookup(r.left)
-            rr = lookup(r.right)
-            cr = (r == p or r == q)
-            if cr and (lr or rr) or (lr and rr):
-                self.res = r
-            return cr or lr or rr
-
-        lookup()
-        return self.res
-
-    def lowestCommonAncestor(self, root, p, q):
-
-        def recurse_tree(current_node):
-            if not current_node:
-                return False
-            left = recurse_tree(current_node.left)
-            right = recurse_tree(current_node.right)
-            # If the current node is one of p or q
-            mid = current_node == p or current_node == q
-            # If any two of the three flags left, right or mid become True.
-            if mid + left + right >= 2:
-                self.ans = current_node
-            # Return True if either of the three bool values is True.
-            return mid or left or right
-
-        self.ans = None
-        recurse_tree(root)
-        return self.ans
-
     def lowestCommonAncestor(self, root, p, q):
         lca = None
         stk = [(root, [root.right, root.left])]
@@ -149,3 +100,26 @@ class Solution:
                 stack.pop()
                 if found and result == node:
                     result = stack[-1][0] if stack else None
+
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        chldNames = ['right', 'left']
+        nodes = [(root, chldNames[:])] if root else None
+        lca_index, found = None, False
+        while nodes:
+            node, children = nodes[-1]
+            if len(children) == 2 and node in (p, q):
+                if found:
+                    return nodes[lca_index][0]
+                found = True
+                lca_index = len(nodes)-1
+            if not children:
+                nodes.pop()
+                if found and lca_index == len(nodes):
+                    lca_index -= 1
+            else:
+                c = getattr(node, children.pop())
+                if c:
+                    nodes.append((c, chldNames[:]))
+        return None

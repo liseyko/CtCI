@@ -3,9 +3,9 @@ class Solution:
     def isSubtree(self, s: TreeNode, t: TreeNode) -> bool:
 
         def convert(p):
-            return "^" + str(p.val) + "#" +\
+            return "^" + str(p.val) + "$" +\
              convert(p.left) +\
-             convert(p.right) if p else "$"
+             convert(p.right) if p else "#"
 
         return convert(t) in convert(s)
 
