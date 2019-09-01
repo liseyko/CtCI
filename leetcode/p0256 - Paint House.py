@@ -1,7 +1,8 @@
 class Solution:
     def minCost(self, costs: List[List[int]]) -> int:
         self.total_cost = float('inf')
-        def bt(h=0, csum = 0, pi=-1):
+
+        def bt(h=0, csum=0, pi=-1):
             if h == len(costs):
                 self.total_cost = min(self.total_cost, csum)
                 return
@@ -18,3 +19,10 @@ class Solution:
             cost[1] += min(costs[i][0::2])
             cost[2] += min(costs[i][:-1])
         return min(costs[-1]) if costs else 0
+
+    def minCost(self, costs: List[List[int]]) -> int:
+        total_costs = [0] * 3
+        for now in costs:
+            total_costs = [now[i] + min(total_costs[:i] + total_costs[i+1:])
+                           for i in range(3)]
+        return min(total_costs)
