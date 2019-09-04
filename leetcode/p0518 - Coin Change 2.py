@@ -1,11 +1,7 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        sumsq = [1]+[0]*(amount)
-
+        res = [1]+[0]*(amount)
         for c in coins:
-            for i in range(len(sumsq)):
-                if c > i:
-                    continue
-                sumsq[i] += sumsq[i-c]
-            #print(sumsq)
-        return sumsq[-1]
+            for i in range(c, len(res)):
+                res[i] += res[i-c]
+        return res[amount]
