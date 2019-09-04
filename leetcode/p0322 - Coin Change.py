@@ -1,4 +1,12 @@
-class Solution(object):
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        res = [0]+[amount+1]*amount
+        for c in coins:
+            for i in range(c, len(res)):
+                res[i] = min(res[i], res[i-c]+1)
+        return res[amount] if res[amount] <= amount else -1
+
+class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
 
         def _coinChange(amount):
@@ -14,17 +22,3 @@ class Solution(object):
 
         return res[amount] if res[amount] < maxval else -1
 
-    def coinChange(self, coins: List[int], amount: int) -> int:
-        res_amt = {}
-        for c in coins:
-            res_amt[c] = 1
-
-        def change(n: int) -> int:
-            if n not in res_amt:
-                res_amt[n] = amount+1
-                for c in coins:
-                    if n > c:
-                        res_amt[n] = min(res_amt[n], change(n-c)+1)
-            return res_amt[n]
-        result = change(amount) if amount else 0
-        return result if result <= amount else -1
