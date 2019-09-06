@@ -7,36 +7,31 @@
 
 class Solution(object):
     def getIntersectionNode(self, headA, headB):
-        if not (headA and headB):
-            return None
-        pa, pb = headA, headB
-        for _ in range(3):
-            while pa and pb:
-                if pa == pb:
-                    return pa
-                pa, pb = pa.next, pb.next
-            pa = headB if not pa else pa
-            pb = headA if not pb else pb
-
-    def getIntersectionNode(self, headA, headB):
         """
         :type head1, head1: ListNode
         :rtype: ListNode
         """
-        offset = 0
-        for _ in range(2):
-            curA, curB = headA, headB
-            while offset:
-                curA = curA.next
-                offset -= 1
-            while curA and curB:
-                if curA == curB:
-                    return curA
-                curA = curA.next
-                curB = curB.next
-            cur = curA or curB
-            if curB:
-                headA, headB = headB, headA
-            while cur:
-                cur = cur.next
-                offset += 1
+        if not headA or not headB:
+            return None
+        ptr1, ptr2 = headA, headB
+        onePass1, onePass2 = 1, 1
+        while ptr1 != ptr2:
+            ptr1, ptr2 = ptr1.next, ptr2.next
+            if not ptr1 and onePass1:
+                ptr1, onePass1 = headB, onePass1-1
+            if not ptr2 and onePass2:
+                ptr2, onePass2 = headA, onePass2-1
+        return ptr1 if ptr1 == ptr2 else None
+
+    def getIntersectionNode(self, headA, headB):
+        if not headA or not headB:
+            return None
+        pa, pb = headA, headB
+        for _ in range(3):
+            while pa and pb and pa != pb:
+                pa, pb = pa.next, pb.next
+            if not pa:
+                pa = headB
+            if not pb:
+                pb = headA
+        return pa if pa == pb else None
