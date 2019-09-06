@@ -7,23 +7,13 @@
 
 class Solution:
     def reverseList(self, head: ListNode) -> ListNode:
-        if not head:
-            return head
-        cur, nxt = head, head.next
-        prv = cur.next = None
-        while nxt:
-            prv, cur, nxt = cur, nxt, nxt.next
-            cur.next = prv
-        return cur
-
-    def reverseList(self, head):
         if head and head.next:
-            reversed_body = self.reverseList(head.next)
+            revBody = self.reverseList(head.next)
             head.next.next, head.next = head, None
-            head = reversed_body
+            head = revBody
         return head
 
-    def reverseList(self, head):
+    def reverseList(self, head: ListNode) -> ListNode:
         prev, curr = None, head
         while curr:
             next = curr.next
