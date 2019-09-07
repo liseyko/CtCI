@@ -21,7 +21,7 @@ class Solution:
 
     def leastInterval(self, tasks: List[str], N: int) -> int:
         """ https://leetcode.com/problems/task-scheduler/discuss/104507/Python-Straightforward-with-Explanation """
-        task_counts = list(collections.Counter(tasks).values())
-        M = max(task_counts)
-        Mct = task_counts.count(M)
-        return max(len(tasks), (M - 1) * (N + 1) + Mct)
+        taskCounts = list(collections.Counter(tasks).values())
+        maxTask = max(taskCounts)
+        maxTasksNum = taskCounts.count(maxTask)
+        return max(sum(taskCounts), (maxTask-1)*(n+1)+maxTasksNum)
