@@ -17,3 +17,11 @@ class Solution:
             while buf:
                 heapq.heappush(h, buf.pop())
         return res
+
+
+    def leastInterval(self, tasks: List[str], N: int) -> int:
+        """ https://leetcode.com/problems/task-scheduler/discuss/104507/Python-Straightforward-with-Explanation """
+        task_counts = list(collections.Counter(tasks).values())
+        M = max(task_counts)
+        Mct = task_counts.count(M)
+        return max(len(tasks), (M - 1) * (N + 1) + Mct)
