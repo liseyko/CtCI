@@ -10,7 +10,7 @@ class Solution:
             d[c] = i
         return max(res, subres)
 
-class Solution:
+
     def lengthOfLongestSubstring(self, s: str) -> int:
         res = j = 0
         subset = set()
