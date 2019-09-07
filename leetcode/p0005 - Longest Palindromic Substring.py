@@ -16,34 +16,26 @@ class Solution:
             i += (j-i+1)
         return s[res[1]:res[2]+1]
 
-class Solution:
+    def longestPalindrome(self, s: str) -> str:
 
-    def chk_pal(self, s, lr):
-        l, r = lr
-        while l > 0 and r < len(s)-1 and s[l-1] == s[r+1]:
-                l -= 1
-                r += 1
-        return l, r
+        def expandPalAround(i, j):
+            while 0 < i and j < len(s)-1 and s[i-1] == s[j+1]:
+                i, j = i-1, j+1
+            return j-i, i, j
 
-    def upd_max(self, lr):
-        l, r = lr
-        if r - l + 1 > self.max_pal[0]:
-            self.max_pal = r-l+1, (l, r)
+        def findLastIndexOfAdjacentDupes(i):
+            j = i
+            while j+1 < len(s) and s[j+1] == s[i]:
+                j += 1
+            return j
 
-    def findSame(self, s, i):
-        j = i
-        while j < len(s)-1 and s[j+1] == s[i]:
-            j += 1
-            self.i = j
-        return i, j
-
-    def longestPalindrome(self, s):
-        self.i, self.max_pal = 0, (1, (0, 0))
-        while self.i < len(s)-1:
-            self.upd_max(self.chk_pal(s, self.findSame(s, self.i)))
-            self.i += 1
-
-        return s[self.max_pal[1][0]:self.max_pal[1][1]+1]
+        res = (0, 0, 0)  # palLen, start, end
+        i = 0
+        while i < len(s):
+            j = findLastIndexOfAdjacentDupes(i)
+            res = max(res, expandPalAround(i, j))
+            i += (j-i+1)
+        return s[res[1]:res[2]+1]
 
 
 class Solution:
