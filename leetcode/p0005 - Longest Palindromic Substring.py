@@ -1,4 +1,22 @@
 class Solution:
+    def longestPalindrome(self, s: str) -> str:
+
+        def expandPal(i, j):
+            while 0 < i and j < len(s)-1 and s[i-1] == s[j+1]:
+                i, j = i-1, j+1
+            return j-i, i, j
+
+        res = (0, 0, 0)
+        i = 0
+        while i < len(s):
+            j = i
+            while j+1 < len(s) and s[j+1] == s[i]:
+                j += 1
+            res = max(res, expandPal(i, j))
+            i += (j-i+1)
+        return s[res[1]:res[2]+1]
+
+class Solution:
 
     def chk_pal(self, s, lr):
         l, r = lr
@@ -20,11 +38,6 @@ class Solution:
         return i, j
 
     def longestPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: str
-        """
-
         self.i, self.max_pal = 0, (1, (0, 0))
         while self.i < len(s)-1:
             self.upd_max(self.chk_pal(s, self.findSame(s, self.i)))
