@@ -9,3 +9,17 @@ class Solution:
             subres += 1
             d[c] = i
         return max(res, subres)
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        res = j = 0
+        subset = set()
+        for i, c in enumerate(s):
+            if c in subset:
+                res = max(res, len(subset))
+                while s[j] != c:
+                    subset, j = subset-{s[j]}, j+1
+                j += 1
+            else:
+                subset.add(c)
+        return max(res, len(subset))
