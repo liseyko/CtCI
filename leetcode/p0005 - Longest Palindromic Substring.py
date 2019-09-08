@@ -17,26 +17,25 @@ class Solution:
         return s[res[1]:res[2]+1]
 
     def longestPalindrome(self, s: str) -> str:
-
+        
         def expandPalAround(i, j):
             while 0 < i and j < len(s)-1 and s[i-1] == s[j+1]:
                 i, j = i-1, j+1
             return j-i, i, j
 
-        def findLastIndexOfAdjacentDupes(i):
+        def getIndexOfLastAdjacentDupe(i):
             j = i
             while j+1 < len(s) and s[j+1] == s[i]:
                 j += 1
             return j
-
-        res = (0, 0, 0)  # palLen, start, end
+                
+        res = (0, 0, 0)
         i = 0
         while i < len(s):
-            j = findLastIndexOfAdjacentDupes(i)
+            j = getIndexOfLastAdjacentDupe(i)
             res = max(res, expandPalAround(i, j))
             i += (j-i+1)
         return s[res[1]:res[2]+1]
-
 
 class Solution:
     """
