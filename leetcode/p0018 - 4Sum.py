@@ -1,34 +1,36 @@
 class Solution:
-    def fourSum(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[List[int]]
-        """
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
         nl = len(nums)
         nums.sort()
-        if nl < 4 or target > sum(nums[-4:]): return []
         res = []
-        for i in range(nl-3):
-            #print('1: ',i)
-            if i > 0 and nums[i] == nums[i-1]: continue
-            if target < nums[i]*4: break
-            for j in range(i+1, nl-2):
-                #print('2: ',j)
-                if j > i+1 and nums[j] == nums[j-1]: continue
-                if target-nums[i] < nums[j]*3: break
-                k, l, t = j+1, nl-1, target - nums[i] - nums[j]
-                while k < l:
-                    #print('3, 4: ',k, l)
-                    s = nums[k] + nums[l]
-                    if s < t: k += 1
-                    elif s > t: l -= 1
-                    else:
-                        res.append([nums[i],nums[j],nums[k],nums[l]])
+        if nl < 4 or target > sum(nums[-4:]): 
+            return res
+        for i in range(len(nums)-3):
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            if sum(nums[i:i+4]) > target:
+                break
+            for j in range(i+1, len(nums)-2):
+                if j > i+1 and nums[j] == nums[j-1]:
+                    continue
+                if sum(nums[j:j+3]) > target-nums[i]:
+                    break
+                k, m = j+1, len(nums)-1
+                t = target - nums[i] - nums[j]
+                while k < m:
+                    km = nums[k]+nums[m]
+                    if km < t:
                         k += 1
-                        while k < l and nums[k] == nums[k-1]: k += 1
+                    elif km > t:
+                        m -= 1
+                    else:
+                        res.append([nums[i], nums[j], nums[k], nums[m]])
+                        k, m = k+1, m-1
+                        while k < m and nums[k] == nums[k-1]: 
+                            k += 1
         return res
-    
+
+
     """
     def fourSum(self, nums, target):
         def findNsum(l, r, target, N, result, results):
@@ -54,5 +56,5 @@ class Solution:
         nums.sort()
         results = []
         findNsum(0, len(nums)-1, target, 4, [], results)
-        return results        
+        return results
         """
