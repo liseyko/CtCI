@@ -11,3 +11,8 @@ class Solution:
                 elif order[w1[i]] < order[w2[i]]:
                     break
         return True
+
+    def isAlienSorted(self, words, order):
+        order = {c: i for i, c in enumerate(order)}
+        nwords = [[order[c] for c in w] for w in words]
+        return all(w1 <= w2 for w1, w2 in zip(nwords, nwords[1:]))
