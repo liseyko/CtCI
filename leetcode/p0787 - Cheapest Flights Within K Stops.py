@@ -1,3 +1,26 @@
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        g = collections.defaultdict(dict)
+        for u, v, p in flights:
+            g[u][v] = p
+
+        pq = [(0, src, K+1)]
+        pricemap = {}
+        while pq:
+            price, u, k = heapq.heappop(pq)
+            if u == dst:
+                return price
+            if not k:
+                continue
+            for v, cost in g[u].items():
+                #heapq.heappush(pq, (price+cost, v, k-1))
+                #print(price, '+', cost, pricemap.get(v, float('inf')))
+                if price+cost < pricemap.get((k, v), float('inf')):
+                    pricemap[(k, v)] = price+cost
+                    heapq.heappush(pq, (price+cost, v, k-1))
+        return -1
+
+
 class Vertex():
     def __init__(self, id):
         self.id = id
