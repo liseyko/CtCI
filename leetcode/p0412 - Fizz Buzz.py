@@ -1,13 +1,21 @@
 class Solution:
-    def fizzBuzz(self, n: int) -> List[str]:
-        res = []
-        for i in range(1, n+1):
-            buf = []
-            if i%3 == 0:
-                buf += ['Fizz']
-            if i%5 == 0:
-                buf += ['Buzz']
-            if not buf:
-                buf = str(i)
-            res.append(''.join(buf))
+    def countSegments(self, s: str) -> int:
+        res = i = 0
+        while i < len(s):
+            if s[i].isspace():
+                i += 1
+                continue
+            while i < len(s) and not s[i].isspace():
+                i += 1
+            res += 1
+        return res
+
+    def countSegments(self, s: str) -> int:
+        return len(s.split())
+
+    def countSegments(self, s: str) -> int:
+        res = 0
+        for i in range(1, len(s)+1):
+            if (i==len(s) or s[i].isspace()) and not s[i-1].isspace():
+                res += 1
         return res
